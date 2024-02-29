@@ -1,3 +1,6 @@
+
+---- Auto Slime ----
+
 local isAutoSlimeEnabled = false
 local persistentIndex = nil
 local pettoslime = "" -- Define pettoslime in a broader scope
@@ -92,6 +95,50 @@ local function toggleAutoSlime()
     end
 end
 
+---- Auto Slime ----
+
+---------- Auto Farming -----------
+local isFarmingToggled = false
+local seedsToPlant = ""
+local function ToggleAutoFarming()
+    local isPlanting = true
+    isFarmingToggled = not isFarmingToggled
+    
+    if isFarmingToggled then
+        print("Auto Farm: On")
+        autoFarmingButton.Text = "Auto Farm: On"
+        -- Add your code to start the farming script
+        coroutine.wrap(function()
+            while isFarmingToggled do
+                for i = 1, 6 do
+                    local args
+                    if isPlanting then
+                        args = {
+                            [1] = seedsToPlant,
+                            [2] = "1",
+                            [3] = tostring(i)
+                        }
+                        wait(0.5)
+                        game:GetService("ReplicatedStorage").Packages.Knit.Services.ItemPlantingService.RF.Plant:InvokeServer(unpack(args))
+                    else
+                        args = {
+                            [1] = tostring(i)
+                        }
+                        wait(0.1)
+                        game:GetService("ReplicatedStorage").Packages.Knit.Services.ItemPlantingService.RF.Harvest:InvokeServer(unpack(args))
+                    end
+                end
+                isPlanting = not isPlanting
+            end
+        end)()
+    else
+        print("Auto Farm: Off")
+        autoFarmingButton.Text = "Auto Farm: Off"
+        -- Add your code to stop the farming script
+    end
+end
+---------- Auto Farming -----------
+
 ---------------------------- GUI --------------------------------
 
 
@@ -105,9 +152,10 @@ local AutoFarmCategory = FinityWindow:Category("Auto-Farm")
 
 local AutoFarmSettings = AutoFarmCategory:Sector("Plant and Harvest") -- Adds sections inside the category, Name Optional
 
-AutoFarmSettings:Cheat("dropdown", "Seeds", function(seeds)
-    print(seeds)
-end, { options = {"Apple", "Banana", "DragonFruit","Pear"}, default = "Apple" })
+AutoFarmSettings:Cheat("dropdown", "Seeds", function(seedsInput)
+seedsToPlant = seedsInput
+print(seedsToPlant)
+end, { options = {"Apple Seeds", "Banana Seeds", "DragonFruit Seeds","Pear Seeds"}, default = "Apple" })
 
 local AutoSlimeCategory = FinityWindow:Category("Auto-Slime")
 
