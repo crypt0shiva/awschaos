@@ -100,13 +100,12 @@ end
 ---------- Auto Farming -----------
 local isFarmingToggled = false
 local seedsToPlant = ""
-local function ToggleAutoFarming()
+local function toggleAutoFarming()
     local isPlanting = true
     isFarmingToggled = not isFarmingToggled
     
     if isFarmingToggled then
         print("Auto Farm: On")
-        autoFarmingButton.Text = "Auto Farm: On"
         -- Add your code to start the farming script
         coroutine.wrap(function()
             while isFarmingToggled do
@@ -133,7 +132,6 @@ local function ToggleAutoFarming()
         end)()
     else
         print("Auto Farm: Off")
-        autoFarmingButton.Text = "Auto Farm: Off"
         -- Add your code to stop the farming script
     end
 end
@@ -156,6 +154,7 @@ AutoFarmSettings:Cheat("dropdown", "Select Seed Type", function(seedsInput)
 seedsToPlant = seedsInput
 print(seedsToPlant)
 end, { options = {"Apple Seeds", "Banana Seeds", "DragonFruit Seeds","Pear Seeds"}, default = "Apple" })
+
 AutoFarmSettings:Cheat("Checkbox", "Toggle AutoFarm", toggleAutoFarming)
 
 local AutoSlimeCategory = FinityWindow:Category("Auto-Slime")
