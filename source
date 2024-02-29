@@ -152,10 +152,11 @@ local AutoFarmCategory = FinityWindow:Category("Auto-Farm")
 
 local AutoFarmSettings = AutoFarmCategory:Sector("Plant and Harvest") -- Adds sections inside the category, Name Optional
 
-AutoFarmSettings:Cheat("dropdown", "Seeds", function(seedsInput)
+AutoFarmSettings:Cheat("dropdown", "Select Seed Type", function(seedsInput)
 seedsToPlant = seedsInput
 print(seedsToPlant)
 end, { options = {"Apple Seeds", "Banana Seeds", "DragonFruit Seeds","Pear Seeds"}, default = "Apple" })
+AutoFarmSettings:Cheat("Checkbox", "Toggle AutoFarm", toggleAutoFarming)
 
 local AutoSlimeCategory = FinityWindow:Category("Auto-Slime")
 
