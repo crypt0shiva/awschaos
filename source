@@ -4,6 +4,22 @@
 local isAutoSlimeEnabled = false
 local persistentIndex = nil
 local pettoslime = "" -- Define pettoslime in a broader scope
+local Playerz = game:GetService("Players")
+
+-- Get the LocalPlayer
+local localPlayerz = Playerz.LocalPlayer
+
+--Get Pets--
+function getPets()
+    local args = {
+        [1] = localPlayerz
+    }
+
+    -- Invoke the server function to get owned pets
+    local oPets = game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.getOwned:InvokeServer(unpack(args))
+    return oPets
+end
+-- Get Pets --
 
 -- Function to reset the persistent index
 local function resetPersistentIndex()
@@ -17,15 +33,8 @@ end
 
 -- Main function to run the auto slimer
 local function autoSlime()
-    local Playerz = game:GetService("Players")
-    local localPlayerz = Playerz.LocalPlayer
-
     repeat
-        local args = {
-            [1] = localPlayerz
-        }
-
-        local OwnedPets = game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.getOwned:InvokeServer(unpack(args))
+        OwnedPets = getPets()
 
         if OwnedPets then
             for idx, pet in pairs(OwnedPets) do
@@ -338,7 +347,162 @@ local function toggleBothHatch()
     end
 end
 
+
+local isPremiumHatchEggToggled = false
+local function toggleHatchPremium()
+    isPremiumHatchEggToggled = not isPremiumHatchEggToggled
+
+    if isPremiumHatchEggToggled then
+        print("Auto HatchPrem: On")
+        coroutine.wrap(function()
+            while isPremiumHatchEggToggled do
+                local args = {
+                    [1] = "Praetorian",
+                    [2] = {
+                        ["VigilantCenturion"] = true,
+                        ["FuryGuardian"] = true,
+                        ["ProwlingGuard"] = true
+                    },
+                    [4] = false,
+                    [5] = true
+                }
+                
+                game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
+            end
+        end)()
+    else
+        print("Auto HatchPrem: Off")
+    end
+end
+
 ----- Auto Hatch ----
+
+
+----- Ghost Farming ----
+local function mutate100()
+
+    local args = {
+        [1] = "Earth",
+        [2] = {
+            ["Cat"] = true,
+            ["Dog"] = false,
+            ["Cow"] = false,
+            ["Mouse"] = true,
+        },
+        [4] = false,
+        [5] = true
+    }
+
+    for i = 1, 13 do
+        game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
+        wait(1) 
+    end
+
+    local OwnedPets = getPets()
+
+    if OwnedPets then
+        for idx, pet in pairs(OwnedPets) do
+            local displayName = pet.DisplayName
+            local key = pet.Key
+
+            if key == "Dog" or key == "Cow" then
+                print("displayName:", displayName)
+                local args5 = {
+                    [1] = idx,
+                    [2] = {}
+                }
+
+                game:GetService("ReplicatedStorage").Packages.Knit.Services.PetCombineService.RF.mutate:InvokeServer(unpack(args5))
+                print("Mutating...",displayName)
+                wait(5)
+            else 
+            end
+        end
+    end
+end
+----- Ghost Farming ----
+
+local function deleteTrash()
+    local OwnedPets = getPets()
+
+    if OwnedPets then
+        for idx, pet in pairs(OwnedPets) do
+            local displayName = pet.DisplayName
+            local key = pet.Key
+            local locked = pet.Locked
+
+            if key == "GiftedDominus" or key == "Dog" or key == "Cow" then
+                print("displayName:", displayName)
+                local args = {
+                    [1] = idx
+                }
+                game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.delete:InvokeServer(unpack(args))
+            else
+            end
+        end
+    end
+end
+
+----- Teleport ------
+local function getLocationTable(locationName)
+
+    if locationName == "school" then
+        return {
+            [1] = workspace:WaitForChild("Zones"):WaitForChild("1"):WaitForChild("Interactables"):WaitForChild("Teleports"):WaitForChild("Locations"):WaitForChild("BackToSchool")
+        }
+    elseif locationName == "garden" then
+        return {
+            [1] = workspace:WaitForChild("Zones"):WaitForChild("Garden"):WaitForChild("Interactables"):WaitForChild("Teleports"):WaitForChild("Locations"):WaitForChild("BackToSchool")
+        }
+    elseif locationName == "space" then
+        return {
+            [1] = workspace:WaitForChild("Zones"):WaitForChild("2"):WaitForChild("Interactables"):WaitForChild("Teleports"):WaitForChild("Locations"):WaitForChild("FuturisticBack")
+        }
+    elseif locationName == "beach" then
+        return {
+            [1] = workspace:WaitForChild("Zones"):WaitForChild("3"):WaitForChild("Interactables"):WaitForChild("Teleports"):WaitForChild("Locations"):WaitForChild("Beach")
+        }
+    elseif locationName == "bunker" then
+        return {
+            [1] = workspace:WaitForChild("Zones"):WaitForChild("4"):WaitForChild("Interactables"):WaitForChild("Teleports"):WaitForChild("Locations"):WaitForChild("NuclearBunker")
+        }
+    elseif locationName == "dino" then
+        return {
+            [1] = workspace:WaitForChild("Zones"):WaitForChild("5"):WaitForChild("Interactables"):WaitForChild("Teleports"):WaitForChild("Locations"):WaitForChild("DinoWorld")
+        }
+    elseif locationName == "void" then
+        return {
+            [1] = workspace:WaitForChild("Zones"):WaitForChild("6"):WaitForChild("Interactables"):WaitForChild("Teleports"):WaitForChild("Locations"):WaitForChild("VoidWorld")
+        }
+    elseif locationName == "center" then
+        return {
+            [1] = workspace:WaitForChild("Zones"):WaitForChild("7"):WaitForChild("Interactables"):WaitForChild("Teleports"):WaitForChild("Locations"):WaitForChild("SpaceCenter")
+        }
+    elseif locationName == "roman" then
+        return {
+            [1] = workspace:WaitForChild("Zones"):WaitForChild("8"):WaitForChild("Interactables"):WaitForChild("Teleports"):WaitForChild("Locations"):WaitForChild("RomanEmpire")
+        }
+    elseif locationName == "magma" then
+        return {
+            [1] = workspace.Zones:FindFirstChild("9").Interactables.Teleports.Locations:FindFirstChild("Magma World")
+        }
+    else
+        return nil -- Handle unknown location names
+    end
+end
+
+-- Function to handle button clicks
+local function teleportTo(locationName)
+    local locationTable = getLocationTable(locationName)
+    if locationTable then
+        print(locationName,locationTable)
+        game:GetService("ReplicatedStorage").Packages.Knit.Services.ZoneService.RE.teleport:FireServer(unpack(locationTable))
+        print("Teleporting to:", locationName)
+    else
+        print("Unknown location:", locationName)
+    end
+end
+------- Teleport
 
 ---------------------------- GUI --------------------------------
 
@@ -411,6 +575,20 @@ local AutoHatchSettings = AutoHatchCategory:Sector("") -- Adds sections inside t
 AutoHatchSettings:Cheat("Checkbox", "Toggle AutoHatch Legend/Myth", toggleMythLegendHatch)
 AutoHatchSettings:Cheat("Checkbox", "Toggle AutoHatch Rare", toggleRareHatch)
 AutoHatchSettings:Cheat("Checkbox", "Toggle AutoHatch Both", toggleBothHatch)
+AutoHatchSettings:Cheat("Checkbox", "Toggle AutoHatch Premium", toggleHatchPremium)
+AutoHatchSettings:Cheat("Checkbox", "Ghost Farming", mutate100)
+AutoHatchSettings:Cheat("Checkbox", "Delete Trash", deleteTrash)
+
+
+----- Teleport -----
+
+local TeleportCategory = FinityWindow:Category("Teleport")
+
+local TeleportSettings = TeleportCategory:Sector("") -- Adds sections inside the category, Name Optional
+
+local locations = TeleportSettings:Cheat("dropdown", "Select Location", function(goToInput)
+    teleportLocation = teleportTo(goToInput)
+    end, { options = {"school","garden","space","beach","bunker","dino","void","space","roman","magma"}, default = "" })
 
 ---------------------------- GUI --------------------------------
 
