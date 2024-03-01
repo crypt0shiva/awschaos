@@ -46,6 +46,9 @@ local function autoSlime()
 
                 if key == pettoslime and size == "Goliath" and slime ~= "Red" then
                     print("displayName:", pettoslime, "| Slime:", slime)
+                    local lastSlimeValue = slime
+                    slimeLabel:SetValue("The last slime value is: ",lastSlimeValue)
+                    
 
                     if slime == nil then 
                         local args = {
@@ -504,6 +507,18 @@ local function teleportTo(locationName)
 end
 ------- Teleport
 
+--- Toggle Console --
+
+local StarterGui = game:GetService("StarterGui")
+
+local function toggleConsole()
+    coroutine.wrap(function()
+        local currentVisibility = StarterGui:GetCore("DevConsoleVisible")
+        StarterGui:SetCore("DevConsoleVisible", not currentVisibility)
+    end)()
+end
+-- Toggle Console
+
 ---------------------------- GUI --------------------------------
 
 
@@ -550,7 +565,7 @@ local SlimePetName = AutoSlimeSettings:Cheat("Textbox", "Pet Name", function(pet
 end, { placeholder = "Dominus" })
 
 AutoSlimeSettings:Cheat("Checkbox", "Toggle AutoSlime", toggleAutoSlime)
-
+local slimeLabel = AutoSlimeSettings:Cheat("Label", "The last slime value is : ")
 
 --- Auto Fight ----
 
@@ -589,6 +604,15 @@ local TeleportSettings = TeleportCategory:Sector("") -- Adds sections inside the
 local locations = TeleportSettings:Cheat("dropdown", "Select Location", function(goToInput)
     teleportLocation = teleportTo(goToInput)
     end, { options = {"school","garden","space","beach","bunker","dino","void","space","roman","magma"}, default = "" })
+
+--- Toggle Console ----
+
+local ConsoleCategory = FinityWindow:Category("Console")
+
+local ConsoleSettings = ConsoleCategory:Sector("") -- Adds sections inside the category, Name Optional
+
+ConsoleSettings:Cheat("Checkbox", "Toggle Console", toggleConsole)
+
 
 ---------------------------- GUI --------------------------------
 
