@@ -1,15 +1,18 @@
+
+--loadstring(game:HttpGet("https://raw.githubusercontent.com/MariyaFurmanova/Library/main/dex2.0", true))()
+
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
-local leaderMenu = player:WaitForChild("leaderstats")
 local chat = playerGui:WaitForChild("Chat"):WaitForChild("Frame")
 local gameUi = playerGui:WaitForChild("GameUI")
+local coreGui = game:GetService("CoreGui")
 
 local potionsBar = gameUi:WaitForChild("PotionsBar")
 local botBar = gameUi:WaitForChild("TopbarContainer")
 local botRight = gameUi:WaitForChild("ToolBar")
+local trails = gameUi:WaitForChild("RightMenu"):WaitForChild("Small"):WaitForChild("Trails")
 local daily = gameUi:WaitForChild("RightMenu"):WaitForChild("Small"):WaitForChild("DailyReward")
 local trade = gameUi:WaitForChild("RightMenu"):WaitForChild("Small"):WaitForChild("TradeRequest")
-local trails = gameUi:WaitForChild("RightMenu"):WaitForChild("Small"):WaitForChild("Trails")
 local season = gameUi:WaitForChild("RightMenu"):WaitForChild("Small"):WaitForChild("SeasonPass")
 local rightMenuAuto = gameUi:WaitForChild("RightMenu"):WaitForChild("Auto")
 local rightMenuEvent = gameUi:WaitForChild("RightMenu"):WaitForChild("Event")
@@ -18,12 +21,18 @@ local spinBar = gameUi:WaitForChild("SpinPrompt")
 local topBar = gameUi:WaitForChild("Currency")
 local leftMenu = gameUi:WaitForChild("Left")
 
+-- Create a ScreenGui to hold the menu
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "MenuGui"
+screenGui.Parent = playerGui
 
-
-function toggleVisibility(guiElement)
-    guiElement.Visible = not guiElement.Visible
+local function toggleVisibility(guiElement)
+    if guiElement and guiElement:IsA("GuiObject") then
+        guiElement.Visible = not guiElement.Visible
+    else
+        warn("Invalid or nil GUI element provided.")
+    end
 end
-
 
 local function toggleAllMenus ()
         local elementsToToggle = {
@@ -37,7 +46,7 @@ local function toggleAllMenus ()
             daily,
             trade,
             trails,
-            Season,
+            season,
             rightMenuAuto,
             rightMenuEvent,
             rightMenuGifts
@@ -572,8 +581,6 @@ end
 ---------------------------- GUI --------------------------------
 
 
-
-
 local Finity = loadstring(game:HttpGet("https://raw.githubusercontent.com/LocalSmail/Finity/main/Library"))()
 
 local FinityWindow = Finity.new("Arm Wrestling Simulator Admin Menu", true, false, "", true, "")
@@ -671,11 +678,29 @@ local MenuSettings = MenuCategory:Sector("") -- Adds sections inside the categor
 local menus = MenuSettings:Cheat("dropdown", "Select Menu", function(menuInput)
     toggleVisibility(menuInput)
     end, { options = {"trails"}, default = "" })
+
 MenuSettings:Cheat("Checkbox", "Toggle Trails", toggleVisibility(trails))
 MenuSettings:Cheat("Checkbox", "Toggle All Menus", toggleAllMenus)
 
+---- GUI ---
 
----------------------------- GUI --------------------------------
+local finWindow = coreGui:WaitForChild("Finity"):WaitForChild("Container")
 
+-- Function to toggle visibility of Finity window
+local function toggleWindow()
+    finWindow.Visible = not finWindow.Visible
+end
 
+-- Create a button
+local toggleButton = Instance.new("TextButton")
+toggleButton.Text = "ToggleFinity"
+toggleButton.Size = UDim2.new(0, 80, 0, 30)
+toggleButton.Position = UDim2.new(0, 10, 0, 10)
+toggleButton.Text = "Toggle Menu"
+toggleButton.Parent = screenGui
+
+-- Connect the function to the button's MouseButton1Click event
+toggleButton.MouseButton1Click:Connect(function()
+    toggleWindow()
+end)
 
