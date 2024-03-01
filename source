@@ -1,3 +1,55 @@
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+local leaderMenu = player:WaitForChild("leaderstats")
+local chat = playerGui:WaitForChild("Chat"):WaitForChild("Frame")
+local gameUi = playerGui:WaitForChild("GameUI")
+
+local potionsBar = gameUi:WaitForChild("PotionsBar")
+local botBar = gameUi:WaitForChild("TopbarContainer")
+local botRight = gameUi:WaitForChild("ToolBar")
+local daily = gameUi:WaitForChild("RightMenu"):WaitForChild("Small"):WaitForChild("DailyReward")
+local trade = gameUi:WaitForChild("RightMenu"):WaitForChild("Small"):WaitForChild("TradeRequest")
+local trails = gameUi:WaitForChild("RightMenu"):WaitForChild("Small"):WaitForChild("Trails")
+local season = gameUi:WaitForChild("RightMenu"):WaitForChild("Small"):WaitForChild("SeasonPass")
+local rightMenuAuto = gameUi:WaitForChild("RightMenu"):WaitForChild("Auto")
+local rightMenuEvent = gameUi:WaitForChild("RightMenu"):WaitForChild("Event")
+local rightMenuGifts = gameUi:WaitForChild("RightMenu"):WaitForChild("Gifts")
+local spinBar = gameUi:WaitForChild("SpinPrompt")
+local topBar = gameUi:WaitForChild("Currency")
+local leftMenu = gameUi:WaitForChild("Left")
+
+
+
+function toggleVisibility(guiElement)
+    guiElement.Visible = not guiElement.Visible
+end
+
+
+local function toggleAllMenus ()
+        local elementsToToggle = {
+            potionsBar,
+            botBar,
+            botRight,
+            chat,
+            spinBar,
+            topBar,
+            leftMenu,
+            daily,
+            trade,
+            trails,
+            Season,
+            rightMenuAuto,
+            rightMenuEvent,
+            rightMenuGifts
+    }
+
+    for _, element in ipairs(elementsToToggle) do
+        toggleVisibility(element)
+    end
+
+end
+
+toggleAllMenus()
 
 ---- Auto Slime ----
 
@@ -47,9 +99,7 @@ local function autoSlime()
                 if key == pettoslime and size == "Goliath" and slime ~= "Red" then
                     print("displayName:", pettoslime, "| Slime:", slime)
                     local lastSlimeValue = slime
-                    slimeLabel:SetValue("The last slime value is: ",lastSlimeValue)
                     
-
                     if slime == nil then 
                         local args = {
                             [1] = idx
@@ -612,6 +662,17 @@ local ConsoleCategory = FinityWindow:Category("Console")
 local ConsoleSettings = ConsoleCategory:Sector("") -- Adds sections inside the category, Name Optional
 
 ConsoleSettings:Cheat("Checkbox", "Toggle Console", toggleConsole)
+
+
+local MenuCategory = FinityWindow:Category("Toggle Menus")
+
+local MenuSettings = MenuCategory:Sector("") -- Adds sections inside the category, Name Optional
+
+local menus = MenuSettings:Cheat("dropdown", "Select Menu", function(menuInput)
+    toggleVisibility(menuInput)
+    end, { options = {"trails"}, default = "" })
+MenuSettings:Cheat("Checkbox", "Toggle Trails", toggleVisibility(trails))
+MenuSettings:Cheat("Checkbox", "Toggle All Menus", toggleAllMenus)
 
 
 ---------------------------- GUI --------------------------------
