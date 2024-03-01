@@ -137,6 +137,209 @@ local function toggleAutoFarming()
 end
 ---------- Auto Farming -----------
 
+
+
+--------- Auto Snacking ----------
+local snacksToCraft = ""
+local isAutoSnackToggled = false
+local function toggleAutoSnackCrafting()
+    isAutoSnackToggled = not isAutoSnackToggled
+    
+    if isAutoSnackToggled then
+        print("Auto Snack Crafting: On")
+        coroutine.wrap(function()
+            while isAutoSnackToggled do
+                for i = 1, 3 do
+                    local args = {
+                        [1] = {
+                            ["Item"] = snacksToCraft,
+                            ["Tier"] = 1
+                        }
+                    }
+                    
+                    game:GetService("ReplicatedStorage").Packages.Knit.Services.ItemCraftingService.RF.UpgradeSnack:InvokeServer(unpack(args))
+                    
+                    local args = {
+                        [1] = {
+                            ["Item"] = "Apple",
+                            ["Tier"] = 2
+                        }
+                    }
+                    game:GetService("ReplicatedStorage").Packages.Knit.Services.ItemCraftingService.RF.UpgradeSnack:InvokeServer(unpack(args))
+                    
+                end
+            end
+        end)()
+    else
+        print("Auto Snack Crafting: Off")
+    end
+end
+--------- Auto Snacking ----------
+
+-------- Auto Merchant --------
+local isAutoMerchantToggled = false
+local function toggleAutoMerchant()
+    isAutoMerchantToggled = not isAutoMerchantToggled
+    
+    if isAutoMerchantToggled then
+        print("Auto Merchant: On")
+        coroutine.wrap(function()
+            while isAutoMerchantToggled do
+                for i = 1, 1 do
+                    local args = {
+                        [1] = "Farmer",
+                        [2] = 2
+                    }
+                    game:GetService("ReplicatedStorage").Packages.Knit.Services.MerchantService.RF.BuyItem:InvokeServer(unpack(args))
+                    wait(1)
+                end
+            end
+        end)()
+    else
+        print("Auto Merchant: Off")
+    end
+end
+-------- Auto Merchant --------
+
+
+------- Auto Fighting -------- 
+
+local isAutoFightToggled = false
+local function toggleAutoFight()
+    isAutoFightToggled = not isAutoFightToggled
+
+    if isAutoFightToggled then
+        print("Auto Fight: On")
+        -- Add your code to start the auto fight script
+        coroutine.wrap(function()
+            while isAutoFightToggled do
+                    local args1 = {
+                        [1] = {
+                        ["Value"] = "Rogue",
+                        ["AutoType"] = "AutoFight",
+                        ["Value2"] = "8"
+                   }
+                  }
+                game:GetService("ReplicatedStorage").Packages.Knit.Services.IdleTeleportService.RF.SetLatestTeleportData:InvokeServer(unpack(args1))
+
+                local args2 = {
+                    [1] = "Rogue",
+                    [2] = workspace.GameObjects.ArmWrestling:FindFirstChild("8").NPC.Rogue.Table,
+                    [3] = "8"
+                }
+                game:GetService("ReplicatedStorage").Packages.Knit.Services.ArmWrestleService.RE.onEnterNPCTable:FireServer(unpack(args2))
+                
+                wait(3)
+
+                for i = 1, 25 do
+                    game:GetService("ReplicatedStorage").Packages.Knit.Services.ArmWrestleService.RE.onClickRequest:FireServer()
+                    wait(.1)
+                end
+            end
+        end)()
+    else
+        print("Auto Fight: Off")
+        -- Add your code to stop the auto fight script
+    end
+end
+
+------- Auto Fighting -------- 
+
+
+---- Auto Hatch ----
+
+local function hatchMythLegend()
+    local args = {
+        [1] = "Blackhole",
+        [2] = {
+            ["GrassMage"] = true,
+            ["MagicMage"] = true,
+            ["Spooky"] = true,
+            ["WaterMage"] = true
+        },
+        [4] = false,
+        [5] = true
+    }
+    
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
+    end
+    
+    
+    local function hatchRare()
+    local args = {
+        [1] = "Icy",
+        [2] = {
+            ["Fox"] = true,
+            ["Bear"] = true,
+            ["Slime"] = true,
+            ["Deer"] = true,
+            ["Squirrel"] = true
+        },
+        [4] = false,
+        [5] = true
+    }
+    
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
+    end
+
+    
+
+local ishatchMythLegendToggled = false
+local function toggleMythLegendHatch()
+    ishatchMythLegendToggled = not ishatchMythLegendToggled
+
+    if ishatchMythLegendToggled then
+        print("Auto Hatch Mythic and Legend: On")
+        coroutine.wrap(function()
+            while ishatchMythLegendToggled do
+                hatchMythLegend()
+            end
+        end)()
+    else
+        print("Auto Hatch Mythic and Legend: Off")
+    end
+end
+
+local ishatchMythRareToggled = false
+local function toggleRareHatch()
+    ishatchRareToggled = not ishatchRareToggled
+
+    if ishatchRareToggled then
+        print("Auto Hatch Rare: On")
+        coroutine.wrap(function()
+            while ishatchRareToggled do
+                hatchRare()
+            end
+        end)()
+    else
+        print("Auto Hatch Rare: Off")
+    end
+end
+
+
+local ishatchBothToggled = false
+local function toggleBothHatch()
+    ishatchBothToggled = not ishatchBothToggled
+
+    if ishatchBothToggled then
+        print("Auto Hatch Rare: On")
+        coroutine.wrap(function()
+            while ishatchBothToggled do
+                hatchRare()
+                hatchMythLegend()
+            end
+        end)()
+    else
+        print("Auto Hatch Rare: Off")
+    end
+end
+
+----- Auto Hatch ----
+
 ---------------------------- GUI --------------------------------
 
 
@@ -146,20 +349,37 @@ local Finity = loadstring(game:HttpGet("https://raw.githubusercontent.com/LocalS
 
 local FinityWindow = Finity.new("Arm Wrestling Simulator Admin Menu", true, false, "", true, "")
 
+
+-- Auto Farm Gui --
 local AutoFarmCategory = FinityWindow:Category("Auto-Farm")
 
-local AutoFarmSettings = AutoFarmCategory:Sector("Plant and Harvest") -- Adds sections inside the category, Name Optional
+local AutoFarmSettings = AutoFarmCategory:Sector("") -- Adds sections inside the category, Name Optional
 
+-- Merchant --
+AutoFarmSettings:Cheat("Checkbox", "Toggle AutoMerchant", toggleAutoMerchant)
+
+-- Seeds --
 local PlantedSeeds = AutoFarmSettings:Cheat("dropdown", "Select Seed Type", function(seedsInput)
 seedsToPlant = seedsInput
 print(seedsToPlant)
-end, { options = {"Apple Seeds", "Banana Seeds", "DragonFruit Seeds","Pear Seeds"}, default = "Apple" })
+end, { options = {"Apple Seeds", "Banana Seeds", "DragonFruit Seeds","Pear Seeds"}, default = "Apple Seeds" })
 
 AutoFarmSettings:Cheat("Checkbox", "Toggle AutoFarm", toggleAutoFarming)
 
+-- Snacks --
+local CraftedSnacks = AutoFarmSettings:Cheat("dropdown", "Select Snack Type", function(snackInput)
+    snacksToCraft = snackInput
+    print(snacksToCraft)
+    end, { options = {"Apple", "Banana", "DragonFruit","Pear"}, default = "Apple" })
+    
+    AutoFarmSettings:Cheat("Checkbox", "Toggle AutoSnack", toggleAutoSnackCrafting)
+
+
+
+-- Auto Slime Gui --
 local AutoSlimeCategory = FinityWindow:Category("Auto-Slime")
 
-local AutoSlimeSettings = AutoSlimeCategory:Sector("Enter Pet Name") -- Adds sections inside the category, Name Optional
+local AutoSlimeSettings = AutoSlimeCategory:Sector("") -- Adds sections inside the category, Name Optional
 local SlimePetName = AutoSlimeSettings:Cheat("Textbox", "Pet Name", function(petslimeinput)
     pettoslime = petslimeinput -- Set the global variable pettoslime
     print(pettoslime)
@@ -167,4 +387,32 @@ end, { placeholder = "Dominus" })
 
 AutoSlimeSettings:Cheat("Checkbox", "Toggle AutoSlime", toggleAutoSlime)
 
+
+--- Auto Fight ----
+
+local AutoFightCategory = FinityWindow:Category("Auto-Fight")
+
+local AutoFightSettings = AutoFightCategory:Sector("") -- Adds sections inside the category, Name Optional
+
+local bosses = AutoFightSettings:Cheat("dropdown", "Select Boss", function(bossInput)
+    bossToFight = bossInput
+    print(bossToFight)
+    end, { options = {"W3","W4","W5","W6","W7B1","W7B2","W7B3","W7B4","W7B5","W8B1","W8B2","W8B3","WvB4","W8B5","W9"}, default = "" })
+
+AutoFightSettings:Cheat("Checkbox", "Toggle AutoFight", toggleAutoFight)
+
+
+--- Auto Hatch ----
+
+local AutoHatchCategory = FinityWindow:Category("Auto-Hatch")
+
+local AutoHatchSettings = AutoHatchCategory:Sector("") -- Adds sections inside the category, Name Optional
+
+AutoHatchSettings:Cheat("Checkbox", "Toggle AutoHatch Legend/Myth", toggleMythLegendHatch)
+AutoHatchSettings:Cheat("Checkbox", "Toggle AutoHatch Rare", toggleRareHatch)
+AutoHatchSettings:Cheat("Checkbox", "Toggle AutoHatch Both", toggleBothHatch)
+
 ---------------------------- GUI --------------------------------
+
+
+
