@@ -42,8 +42,9 @@ local function assignTeam(teamName)
         local args = {
             [1] = teamHex
         }
+        print("Assigning team:", teamName, "with hex:", teamHex)
         game:GetService("ReplicatedStorage").Packages.Knit.Services.PetTeamService.RE.onEquipTeam:FireServer(unpack(args))
-        print("Team ",teamName,"Assigned.")
+        print("Team", teamName, "Assigned.")
     else
         warn("Team name not found in teamsTable:", teamName)
     end
