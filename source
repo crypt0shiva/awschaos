@@ -1,121 +1,580 @@
-local Players = game:GetService("Players")
-local pettoslime = "InfernoLeviathanSerpent"
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/MariyaFurmanova/Library/main/dex2.0", true))()
+loadstring(game:HttpGet("https://github.com/exxtremestuffs/SimpleSpySource/raw/master/SimpleSpy.lua"))()
+
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+local chat = playerGui:WaitForChild("Chat"):WaitForChild("Frame")
+local gameUi = playerGui:WaitForChild("GameUI")
+local coreGui = game:GetService("CoreGui")
+
+local potionsBar = gameUi:WaitForChild("PotionsBar")
+local botBar = gameUi:WaitForChild("TopbarContainer")
+local botRight = gameUi:WaitForChild("ToolBar")
+local daily = gameUi:WaitForChild("RightMenu"):WaitForChild("Small"):WaitForChild("DailyReward")
+local trade = gameUi:WaitForChild("RightMenu"):WaitForChild("Small"):WaitForChild("TradeRequest")
+local season = gameUi:WaitForChild("RightMenu"):WaitForChild("Small"):WaitForChild("SeasonPass")
+local rightMenuAuto = gameUi:WaitForChild("RightMenu"):WaitForChild("Auto")
+local rightMenuEvent = gameUi:WaitForChild("RightMenu"):WaitForChild("Event")
+local rightMenuGifts = gameUi:WaitForChild("RightMenu"):WaitForChild("Gifts")
+local spinBar = gameUi:WaitForChild("SpinPrompt")
+local topBar = gameUi:WaitForChild("Currency")
+local leftMenu = gameUi:WaitForChild("Left")
+
 
 -- Create a ScreenGui to hold the menu
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "MenuGui"
-screenGui.Parent = Players.LocalPlayer.PlayerGui
-
--- Create a frame for the menu
-local menuFrame = Instance.new("Frame")
-menuFrame.Name = "MenuFrame"
-menuFrame.Size = UDim2.new(0, 400, 1, 0)
-menuFrame.Position = UDim2.new(0, -400, 0, 0)
-menuFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-menuFrame.Parent = screenGui
-
--- Create a button to toggle the menu
-local toggleButton = Instance.new("TextButton")
-toggleButton.Name = "ToggleButton"
-toggleButton.Size = UDim2.new(0, 80, 0, 30)
-toggleButton.Position = UDim2.new(0, 10, 0, 10)
-toggleButton.Text = "Toggle Menu"
-toggleButton.Parent = screenGui
-
--- Create a toggle button for starting and stopping the farming script
-local autoFarmingButton = Instance.new("TextButton")
-autoFarmingButton.Name = "FarmingButton"
-autoFarmingButton.Size = UDim2.new(0, 150, 0, 30)
-autoFarmingButton.Position = UDim2.new(0, 10, 0, 50)
-autoFarmingButton.Text = "Auto Farm: Off"
-autoFarmingButton.Parent = menuFrame
-
--- Create a button to start/stop auto snack crafting
-local autoSnackButton = Instance.new("TextButton")
-autoSnackButton.Name = "AutoSnackButton"
-autoSnackButton.Size = UDim2.new(0, 150, 0, 30)
-autoSnackButton.Position = UDim2.new(0, 10, 0, 90)
-autoSnackButton.Text = "Auto Snack Crafting: Off"
-autoSnackButton.Parent = menuFrame
-
--- Create a button to start/stop auto merchant
-local autoMerchantButton = Instance.new("TextButton")
-autoMerchantButton.Name = "AutoMerchantButton"
-autoMerchantButton.Size = UDim2.new(0, 150, 0, 30)
-autoMerchantButton.Position = UDim2.new(0, 10, 0, 130)
-autoMerchantButton.Text = "Auto Merchant: Off"
-autoMerchantButton.Parent = menuFrame
-
--- Create a button to start/stop auto fight
-local autoFightButton = Instance.new("TextButton")
-autoFightButton.Name = "AutoFightButton"
-autoFightButton.Size = UDim2.new(0, 150, 0, 30)
-autoFightButton.Position = UDim2.new(0, 10, 0,170)
-autoFightButton.Text = "Auto Fight: Off"
-autoFightButton.Parent = menuFrame
-
--- Create a button to start/stop auto mutate
-local autoMutateButton = Instance.new("TextButton")
-autoMutateButton.Name = "AutoMutateButton"
-autoMutateButton.Size = UDim2.new(0, 150, 0, 30)
-autoMutateButton.Position = UDim2.new(0, 10, 0,210)
-autoMutateButton.Text = "Auto Mutate: Off"
-autoMutateButton.Parent = menuFrame
-
--- Create a button to start/stop auto slime
-local autoSlimeButton = Instance.new("TextButton")
-autoSlimeButton.Name = "AutoSlimeButton"
-autoSlimeButton.Size = UDim2.new(0, 150, 0, 30)
-autoSlimeButton.Position = UDim2.new(0, 10, 0,250)
-autoSlimeButton.Text = "Auto Slime: Off"
-autoSlimeButton.Parent = menuFrame
-
--- Create a button to remove the menu
-local consoleButton = Instance.new("TextButton")
-consoleButton.Name = "ConsoleButton"
-consoleButton.Size = UDim2.new(0, 150, 0, 30)
-consoleButton.Position = UDim2.new(0, 10, 0, 1100)
-consoleButton.Text = "Console"
-consoleButton.Parent = menuFrame
+screenGui.Parent = playerGui
 
 
 
--- Create a button to remove the menu
-local removeButton = Instance.new("TextButton")
-removeButton.Name = "RemoveButton"
-removeButton.Size = UDim2.new(0, 150, 0, 30)
-removeButton.Position = UDim2.new(0, 10, 0, 950)
-removeButton.Text = "Remove Menu"
-removeButton.Parent = menuFrame
+local teamsTable = {
+    ["training"] = "92862595-1e0d-48ae-9f65-df7f7a65916e",
+    ["wins"] = "e92ac30c-332c-4595-b987-060c2c9d7691",
+    ["luck"] = "1d45901e-cd4d-4010-a364-9ee3c2afed21"
+}
 
+-- Teams Function ---
+local function assignTeam(teamName)
+    local teamHex = teamsTable[teamName]
+    if teamHex then
+        local args = {
+            [1] = teamHex
+        }
+        game:GetService("ReplicatedStorage").Packages.Knit.Services.PetTeamService.RE.onEquipTeam:FireServer(unpack(args))
+    else
+        warn("Team name not found in teamsTable:", teamName)
+    end
+end
+-- Teams Function ---
 
+-- Gui Functions --
 
--- Create a button to start/stop auto hatch
-local AutoMythLegendHatchButton = Instance.new("TextButton")
-AutoMythLegendHatchButton.Name = "AutoMythLegendHatchButton"
-AutoMythLegendHatchButton.Size = UDim2.new(0, 150, 0, 30)
-AutoMythLegendHatchButton.Position = UDim2.new(0, 10, 0, 330)
-AutoMythLegendHatchButton.Text = "Auto Hatch: Off"
-AutoMythLegendHatchButton.Parent = menuFrame
-
-
-
-local autoHatchPremiumButton = Instance.new("TextButton")
-autoHatchPremiumButton.Name = "autoHatchPremiumButton"
-autoHatchPremiumButton.Size = UDim2.new(0, 150, 0, 30)
-autoHatchPremiumButton.Position = UDim2.new(0, 10, 0, 370)
-autoHatchPremiumButton.Text = "Auto HatchPrem: Off"
-autoHatchPremiumButton.Parent = menuFrame
-
--- Function to toggle the menu visibility
-local function ToggleMenuVisibility()
-    local targetPosition = menuFrame.Position.X.Offset == 0 and -400 or 0
-    menuFrame:TweenPosition(UDim2.new(0, targetPosition, 0, 0), "Out", "Quad", 0.3, true)
+local function toggleVisibility(guiElement)
+    if guiElement and guiElement:IsA("GuiObject") then
+        guiElement.Visible = not guiElement.Visible
+    else
+        warn("Invalid or nil GUI element provided.")
+    end
 end
 
--- Function to get the location table based on the location name
-local function getLocationTable(locationName)
+local function toggleAllMenus ()
+        local elementsToToggle = {
+            potionsBar,
+            botBar,
+            botRight,
+            chat,
+            spinBar,
+            topBar,
+            leftMenu,
+            daily,
+            trade,
+            season,
+            rightMenuAuto,
+            rightMenuEvent,
+            rightMenuGifts
+    }
+
+    for _, element in ipairs(elementsToToggle) do
+        toggleVisibility(element)
+    end
+
+end
+
+toggleAllMenus()
+
+---- Auto Slime ----
+
+local isAutoSlimeEnabled = false
+local persistentIndex = nil
+local pettoslime = "" -- Define pettoslime in a broader scope
+local Playerz = game:GetService("Players")
+
+-- Get the LocalPlayer
+local localPlayerz = Playerz.LocalPlayer
+
+--Get Pets--
+function getPets()
+    local args = {
+        [1] = localPlayerz
+    }
+
+    -- Invoke the server function to get owned pets
+    local oPets = game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.getOwned:InvokeServer(unpack(args))
+    return oPets
+end
+-- Get Pets --
+
+-- Function to reset the persistent index
+local function resetPersistentIndex()
+    persistentIndex = nil
+end
+
+-- Function to check if the current pet index matches the persistent index
+local function shouldReslime(currentIndex)
+    return persistentIndex and currentIndex == persistentIndex
+end
+
+-- Main function to run the auto slimer
+local function autoSlime()
+    repeat
+        OwnedPets = getPets()
+
+        if OwnedPets then
+            for idx, pet in pairs(OwnedPets) do
+                local displayName = pet.DisplayName
+                local locked = pet.Locked
+                local slime = pet.Slime
+                local key = pet.Key
+                local size = pet.CraftType
+
+                if key == pettoslime and size == "Goliath" and slime ~= "Red" then
+                    print("displayName:", pettoslime, "| Slime:", slime)
+                    local lastSlimeValue = slime
+                    
+                    if slime == nil then 
+                        local args = {
+                            [1] = idx
+                        }
+                        game:GetService("ReplicatedStorage").Packages.Knit.Services.PetDeslimeService.RE.onPurchase:FireServer(unpack(args))
+                        wait(.1)
+                        game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.slimify:InvokeServer(unpack(args))
+                        print("Sliming...")
+                        wait(1)
+                        persistentIndex = idx
+                    elseif slime ~= "Red" then
+                        local args = {
+                            [1] = idx
+                        }
+
+                        game:GetService("ReplicatedStorage").Packages.Knit.Services.PetDeslimeService.RE.onPurchase:FireServer(unpack(args))
+                        print("Desliming...")
+
+                        local countdown = 180
+                        while countdown > 0 do
+                            print("Remaining time:", countdown, "seconds")
+                            wait(10)
+                            countdown = countdown - 10
+                        end
+                        game:GetService("ReplicatedStorage").Packages.Knit.Services.PetDeslimeService.RE.onClaim:FireServer()
+                    end
+                elseif shouldReslime(idx) then
+                    local args = {
+                        [1] = idx
+                    }
+
+                    game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.slimify:InvokeServer(unpack(args))
+                    print("Resliming...")
+                    wait(1)
+                    resetPersistentIndex()
+                else
+                    -- Handle other cases or leave it empty if no specific action is needed.
+                end
+            end
+        else
+            print("OwnedPets is nil.")
+        end
+    until persistentIndex == nil
+end
+
+-- Function to toggle auto slimer
+local function toggleAutoSlime()
+    isAutoSlimeEnabled = not isAutoSlimeEnabled -- Toggle the state
     
+    if isAutoSlimeEnabled then
+        print("Auto Slime enabled!")
+        autoSlime() -- Start the auto slime functionality
+    else
+        print("Auto Slime disabled.")
+    end
+end
+
+---- Auto Slime ----
+
+---------- Auto Farming -----------
+local isFarmingToggled = false
+local seedsToPlant = ""
+local function toggleAutoFarming()
+    local isPlanting = true
+    isFarmingToggled = not isFarmingToggled
+    
+    if isFarmingToggled then
+        print("Auto Farm: On")
+        -- Add your code to start the farming script
+        coroutine.wrap(function()
+            while isFarmingToggled do
+                for i = 1, 6 do
+                    local args
+                    if isPlanting then
+                        args = {
+                            [1] = seedsToPlant,
+                            [2] = "1",
+                            [3] = tostring(i)
+                        }
+                        wait(0.5)
+                        game:GetService("ReplicatedStorage").Packages.Knit.Services.ItemPlantingService.RF.Plant:InvokeServer(unpack(args))
+                    else
+                        args = {
+                            [1] = tostring(i)
+                        }
+                        wait(0.1)
+                        game:GetService("ReplicatedStorage").Packages.Knit.Services.ItemPlantingService.RF.Harvest:InvokeServer(unpack(args))
+                    end
+                end
+                isPlanting = not isPlanting
+            end
+        end)()
+    else
+        print("Auto Farm: Off")
+        -- Add your code to stop the farming script
+    end
+end
+---------- Auto Farming -----------
+
+
+
+--------- Auto Snacking ----------
+local snacksToCraft = ""
+local isAutoSnackToggled = false
+local function toggleAutoSnackCrafting()
+    isAutoSnackToggled = not isAutoSnackToggled
+    
+    if isAutoSnackToggled then
+        print("Auto Snack Crafting: On")
+        coroutine.wrap(function()
+            while isAutoSnackToggled do
+                for i = 1, 3 do
+                    local args = {
+                        [1] = {
+                            ["Item"] = snacksToCraft,
+                            ["Tier"] = 1
+                        }
+                    }
+                    
+                    game:GetService("ReplicatedStorage").Packages.Knit.Services.ItemCraftingService.RF.UpgradeSnack:InvokeServer(unpack(args))
+                    
+                    local args = {
+                        [1] = {
+                            ["Item"] = "Apple",
+                            ["Tier"] = 2
+                        }
+                    }
+                    game:GetService("ReplicatedStorage").Packages.Knit.Services.ItemCraftingService.RF.UpgradeSnack:InvokeServer(unpack(args))
+                    
+                end
+            end
+        end)()
+    else
+        print("Auto Snack Crafting: Off")
+    end
+end
+--------- Auto Snacking ----------
+
+-------- Auto Merchant --------
+local isAutoMerchantToggled = false
+local function toggleAutoMerchant()
+    isAutoMerchantToggled = not isAutoMerchantToggled
+    
+    if isAutoMerchantToggled then
+        print("Auto Merchant: On")
+        coroutine.wrap(function()
+            while isAutoMerchantToggled do
+                for i = 1, 1 do
+                    local args = {
+                        [1] = "Farmer",
+                        [2] = 2
+                    }
+                    game:GetService("ReplicatedStorage").Packages.Knit.Services.MerchantService.RF.BuyItem:InvokeServer(unpack(args))
+                    wait(1)
+                end
+            end
+        end)()
+    else
+        print("Auto Merchant: Off")
+    end
+end
+-------- Auto Merchant --------
+
+
+------- Auto Fighting -------- 
+
+local isAutoFightToggled = false
+local function toggleAutoFight()
+    isAutoFightToggled = not isAutoFightToggled
+
+    if isAutoFightToggled then
+        print("Auto Fight: On")
+        assignTeam("wins")
+        -- Add your code to start the auto fight script
+        coroutine.wrap(function()
+            while isAutoFightToggled do
+                    local args1 = {
+                        [1] = {
+                        ["Value"] = "Rogue",
+                        ["AutoType"] = "AutoFight",
+                        ["Value2"] = "8"
+                   }
+                  }
+                game:GetService("ReplicatedStorage").Packages.Knit.Services.IdleTeleportService.RF.SetLatestTeleportData:InvokeServer(unpack(args1))
+
+                local args2 = {
+                    [1] = "Rogue",
+                    [2] = workspace.GameObjects.ArmWrestling:FindFirstChild("8").NPC.Rogue.Table,
+                    [3] = "8"
+                }
+                game:GetService("ReplicatedStorage").Packages.Knit.Services.ArmWrestleService.RE.onEnterNPCTable:FireServer(unpack(args2))
+                
+                wait(3)
+
+                for i = 1, 25 do
+                    game:GetService("ReplicatedStorage").Packages.Knit.Services.ArmWrestleService.RE.onClickRequest:FireServer()
+                    wait(.1)
+                end
+            end
+        end)()
+    else
+        print("Auto Fight: Off")
+        -- Add your code to stop the auto fight script
+    end
+end
+
+------- Auto Fighting -------- 
+------- Auto Train -------- 
+
+local isAutoTrainToggled = false
+local function toggleTrain()
+    isAutoTrainToggled = not isAutoTrainToggled
+    wait(3)
+    if isAutoTrainToggled then
+        print("Auto Train: On")
+        assignTeam("training")
+        local args1 = {
+            [1] = {
+                ["Value"] = "Biceps",
+                ["AutoType"] = "AutoTrain"
+            }
+          }
+        game:GetService("ReplicatedStorage").Packages.Knit.Services.IdleTeleportService.RF.SetLatestTeleportData:InvokeServer(unpack(args1))
+        local args = {
+            [1] = "9",
+            [2] = "Dumbells",
+            [3] = "925000Kg"
+        }
+        game:GetService("ReplicatedStorage").Packages.Knit.Services.ToolService.RE.onEquipRequest:FireServer(unpack(args))
+        local args = {
+            [1] = "9",
+            [2] = "Barbells",
+            [3] = "Tier27"
+        }
+        game:GetService("ReplicatedStorage").Packages.Knit.Services.ToolService.RE.onEquipRequest:FireServer(unpack(args))
+        coroutine.wrap(function()
+            while isAutoTrainToggled do
+                for i = 1, 100 do
+                    game:GetService("ReplicatedStorage").Packages.Knit.Services.ToolService.RE.onClick:FireServer()
+                    wait(1)
+                end
+            end
+        end)()
+    else
+        print("Auto Train: Off")
+        -- Add your code to stop the auto fight script
+    end
+end
+
+------- Auto Train -------- 
+
+---- Auto Hatch ----
+
+local function hatchMythLegend()
+    local args = {
+        [1] = "Blackhole",
+        [2] = {
+            ["GrassMage"] = true,
+            ["MagicMage"] = true,
+            ["Spooky"] = true,
+            ["WaterMage"] = true
+        },
+        [4] = false,
+        [5] = true
+    }
+    
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
+    end
+    
+    local function hatchRare()
+    local args = {
+        [1] = "Icy",
+        [2] = {
+            ["Fox"] = true,
+            ["Bear"] = true,
+            ["Slime"] = true,
+            ["Deer"] = true,
+            ["Squirrel"] = true
+        },
+        [4] = false,
+        [5] = true
+    }
+    
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
+    game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
+    end
+
+    
+
+local ishatchMythLegendToggled = false
+local function toggleMythLegendHatch()
+    ishatchMythLegendToggled = not ishatchMythLegendToggled
+
+    if ishatchMythLegendToggled then
+        print("Auto Hatch Mythic and Legend: On")
+        coroutine.wrap(function()
+            while ishatchMythLegendToggled do
+                hatchMythLegend()
+            end
+        end)()
+    else
+        print("Auto Hatch Mythic and Legend: Off")
+    end
+end
+
+local ishatchMythRareToggled = false
+local function toggleRareHatch()
+    ishatchRareToggled = not ishatchRareToggled
+
+    if ishatchRareToggled then
+        print("Auto Hatch Rare: On")
+        coroutine.wrap(function()
+            while ishatchRareToggled do
+                hatchRare()
+            end
+        end)()
+    else
+        print("Auto Hatch Rare: Off")
+    end
+end
+
+
+local ishatchBothToggled = false
+local function toggleBothHatch()
+    ishatchBothToggled = not ishatchBothToggled
+
+    if ishatchBothToggled then
+        print("Auto Hatch Rare: On")
+        coroutine.wrap(function()
+            while ishatchBothToggled do
+                hatchRare()
+                hatchMythLegend()
+            end
+        end)()
+    else
+        print("Auto Hatch Rare: Off")
+    end
+end
+
+
+local isPremiumHatchEggToggled = false
+local function toggleHatchPremium()
+    isPremiumHatchEggToggled = not isPremiumHatchEggToggled
+
+    if isPremiumHatchEggToggled then
+        print("Auto HatchPrem: On")
+        assignTeam("luck")
+        coroutine.wrap(function()
+            while isPremiumHatchEggToggled do
+                local args = {
+                    [1] = "Praetorian",
+                    [2] = {
+                        ["VigilantCenturion"] = true,
+                        ["FuryGuardian"] = true,
+                        ["ProwlingGuard"] = true
+                    },
+                    [4] = false,
+                    [5] = true
+                }
+                
+                game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
+            end
+        end)()
+    else
+        print("Auto HatchPrem: Off")
+    end
+end
+
+----- Auto Hatch ----
+
+
+----- Ghost Farming ----
+local function mutate100()
+
+    local args = {
+        [1] = "Earth",
+        [2] = {
+            ["Cat"] = true,
+            ["Dog"] = false,
+            ["Cow"] = false,
+            ["Mouse"] = true,
+        },
+        [4] = false,
+        [5] = true
+    }
+
+    for i = 1, 13 do
+        game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
+        wait(1) 
+    end
+
+    local OwnedPets = getPets()
+
+    if OwnedPets then
+        for idx, pet in pairs(OwnedPets) do
+            local displayName = pet.DisplayName
+            local key = pet.Key
+
+            if key == "Dog" or key == "Cow" then
+                print("displayName:", displayName)
+                local args5 = {
+                    [1] = idx,
+                    [2] = {}
+                }
+
+                game:GetService("ReplicatedStorage").Packages.Knit.Services.PetCombineService.RF.mutate:InvokeServer(unpack(args5))
+                print("Mutating...",displayName)
+                wait(5)
+            else 
+            end
+        end
+    end
+end
+----- Ghost Farming ----
+
+local function deleteTrash()
+    local OwnedPets = getPets()
+
+    if OwnedPets then
+        for idx, pet in pairs(OwnedPets) do
+            local displayName = pet.DisplayName
+            local key = pet.Key
+            local locked = pet.Locked
+
+            if key == "GiftedDominus" or key == "Dog" or key == "Cow" then
+                print("displayName:", displayName)
+                local args = {
+                    [1] = idx
+                }
+                game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.delete:InvokeServer(unpack(args))
+            else
+            end
+        end
+    end
+end
+
+----- Teleport ------
+local function getLocationTable(locationName)
+
     if locationName == "school" then
         return {
             [1] = workspace:WaitForChild("Zones"):WaitForChild("1"):WaitForChild("Interactables"):WaitForChild("Teleports"):WaitForChild("Locations"):WaitForChild("BackToSchool")
@@ -154,7 +613,7 @@ local function getLocationTable(locationName)
         }
     elseif locationName == "magma" then
         return {
-            [1] = workspace:WaitForChild("Zones"):WaitForChild("8"):WaitForChild("Interactables"):WaitForChild("Teleports"):WaitForChild("Locations"):WaitForChild("Magma World")
+            [1] = workspace.Zones:FindFirstChild("9").Interactables.Teleports.Locations:FindFirstChild("Magma World")
         }
     else
         return nil -- Handle unknown location names
@@ -162,434 +621,182 @@ local function getLocationTable(locationName)
 end
 
 -- Function to handle button clicks
-local function onButtonClick(locationName)
+local function teleportTo(locationName)
     local locationTable = getLocationTable(locationName)
     if locationTable then
-        -- Use the locationTable as needed
-        game:GetService("ReplicatedStorage"):WaitForChild("Packages"):WaitForChild("Knit"):WaitForChild("Services"):WaitForChild("ZoneService"):WaitForChild("RE"):WaitForChild("teleport"):FireServer(unpack(locationTable))
+        print(locationName,locationTable)
+        game:GetService("ReplicatedStorage").Packages.Knit.Services.ZoneService.RE.teleport:FireServer(unpack(locationTable))
         print("Teleporting to:", locationName)
     else
         print("Unknown location:", locationName)
     end
 end
+------- Teleport
 
-local function createButtons()
-    local locations = {"school", "garden", "space", "beach", "bunker", "dino", "void", "center", "roman", "magma"}
-    local buttonHeight = 20
-    local buttonWidth = 390 / #locations  -- Adjusted width to fit within the menuFrame
-    local buttonSpacing = 10
-
-    local maxButtonsPerRow = math.floor(menuFrame.Size.X.Offset / (buttonWidth + buttonSpacing))
-    local numRows = math.ceil(#locations / maxButtonsPerRow)
-
-    -- Calculate the yOffset based on the combined height of existing buttons
-    local yOffset = 1000  -- Adjust as per the actual button heights and spacing
-
-    for i, locationName in ipairs(locations) do
-        local row = math.ceil(i / maxButtonsPerRow)
-        local col = i % maxButtonsPerRow
-        if col == 0 then
-            col = maxButtonsPerRow
-        end
-
-        local button = Instance.new("TextButton")
-        button.Name = locationName .. "Button"
-        button.Text = locationName
-        button.Size = UDim2.new(0, buttonWidth, 0, buttonHeight)
-        button.Position = UDim2.new(0, 10 + (col - 1) * (buttonWidth + buttonSpacing), 0, yOffset + (row - 1) * (buttonHeight + buttonSpacing))
-        button.Parent = menuFrame  -- Parent to menuFrame instead of screenGui
-
-        button.MouseButton1Click:Connect(function()
-            onButtonClick(locationName)
-        end)
-    end
-end
-
--- Call the function to create buttons
-createButtons()
-
-
--- Function to toggle the farming script and update the button text
-local isFarmingToggled = false
-local function ToggleAutoFarming()
-    local isPlanting = true
-    isFarmingToggled = not isFarmingToggled
-    
-    if isFarmingToggled then
-        print("Auto Farm: On")
-        autoFarmingButton.Text = "Auto Farm: On"
-        -- Add your code to start the farming script
-        coroutine.wrap(function()
-            while isFarmingToggled do
-                for i = 1, 6 do
-                    local args
-                    if isPlanting then
-                        args = {
-                            [1] = "Apple Seeds",
-                            [2] = "1",
-                            [3] = tostring(i)
-                        }
-                        wait(0.5)
-                        game:GetService("ReplicatedStorage").Packages.Knit.Services.ItemPlantingService.RF.Plant:InvokeServer(unpack(args))
-                    else
-                        args = {
-                            [1] = tostring(i)
-                        }
-                        wait(0.1)
-                        game:GetService("ReplicatedStorage").Packages.Knit.Services.ItemPlantingService.RF.Harvest:InvokeServer(unpack(args))
-                    end
-                end
-                isPlanting = not isPlanting
-            end
-        end)()
-    else
-        print("Auto Farm: Off")
-        autoFarmingButton.Text = "Auto Farm: Off"
-        -- Add your code to stop the farming script
-    end
-end
-
--- Function to toggle auto snack crafting and update the button text
-local isAutoSnackToggled = false
-local function ToggleAutoSnackCrafting()
-    isAutoSnackToggled = not isAutoSnackToggled
-    
-    if isAutoSnackToggled then
-        print("Auto Snack Crafting: On")
-autoSnackButton.Text = "Auto Snack Crafting: On"
-        coroutine.wrap(function()
-            while isAutoSnackToggled do
-                for i = 1, 3 do
-                    local args = {
-                        [1] = {
-                            ["Item"] = "Apple",
-                            ["Tier"] = 1
-                        }
-                    }
-                    
-                    game:GetService("ReplicatedStorage").Packages.Knit.Services.ItemCraftingService.RF.UpgradeSnack:InvokeServer(unpack(args))
-                    
-                    local args = {
-                        [1] = {
-                            ["Item"] = "Apple",
-                            ["Tier"] = 2
-                        }
-                    }
-                    game:GetService("ReplicatedStorage").Packages.Knit.Services.ItemCraftingService.RF.UpgradeSnack:InvokeServer(unpack(args))
-                    
-                end
-            end
-        end)()
-    else
-        print("Auto Snack Crafting: Off")
-        autoSnackButton.Text = "Auto Snack Crafting: Off"
-        -- Add your code to stop auto snack crafting here
-    end
-end
-
--- Function to toggle auto merchant and update the button text
-    local isAutoMerchantToggled = false
-    local function ToggleAutoMerchant()
-        isAutoMerchantToggled = not isAutoMerchantToggled
-        
-        if isAutoMerchantToggled then
-            print("Auto Merchant: On")
-            autoMerchantButton.Text = "Auto Merchant: On"
-            coroutine.wrap(function()
-                while isAutoMerchantToggled do
-                    for i = 1, 1 do
-                        local args = {
-                            [1] = "Farmer",
-                            [2] = 2
-                        }
-                        wait(1)
-                        game:GetService("ReplicatedStorage").Packages.Knit.Services.MerchantService.RF.BuyItem:InvokeServer(unpack(args))
-                    end
-
-                    wait(1)
-
-                    -- for i = 1, 1 do
-                    --     local args = {
-                    --         [1] = "Farmer",
-                    --         [2] = 3
-                    --     }
-                    --     wait(1)
-                    --     game:GetService("ReplicatedStorage").Packages.Knit.Services.MerchantService.RF.BuyItem:InvokeServer(unpack(args))
-                    -- end
-                end
-            end)()
-        else
-            print("Auto Merchant: Off")
-            autoMerchantButton.Text = "Auto Merchant: Off"
-            -- Add your code to stop auto merchant here
-        end
-    end
-
--- Function to toggle auto fight and update the button text
-    local isAutoFightToggled = false
-local function ToggleAutoFight()
-    isAutoFightToggled = not isAutoFightToggled
-
-    if isAutoFightToggled then
-        print("Auto Fight: On")
-        autoFightButton.Text = "Auto Fight: On"
-        -- Add your code to start the auto fight script
-        coroutine.wrap(function()
-            while isAutoFightToggled do
-                    local args1 = {
-                        [1] = {
-                        ["Value"] = "Rogue",
-                        ["AutoType"] = "AutoFight",
-                        ["Value2"] = "8"
-                   }
-                  }
-                game:GetService("ReplicatedStorage").Packages.Knit.Services.IdleTeleportService.RF.SetLatestTeleportData:InvokeServer(unpack(args1))
-
-                local args2 = {
-                    [1] = "Rogue",
-                    [2] = workspace.GameObjects.ArmWrestling:FindFirstChild("8").NPC.Rogue.Table,
-                    [3] = "8"
-                }
-                game:GetService("ReplicatedStorage").Packages.Knit.Services.ArmWrestleService.RE.onEnterNPCTable:FireServer(unpack(args2))
-                
-                wait(3)
-
-                for i = 1, 25 do
-                    game:GetService("ReplicatedStorage").Packages.Knit.Services.ArmWrestleService.RE.onClickRequest:FireServer()
-                    wait(.1)
-                end
-            end
-        end)()
-    else
-        print("Auto Fight: Off")
-        autoFightButton.Text = "Auto Fight: Off"
-        -- Add your code to stop the auto fight script
-    end
-end
-
-
--- Function to toggle auto hatch and update the button text
-local isAutoMythLegendHatchToggled = false
-local function ToggleHatch()
-    isAutoMythLegendHatchToggled = not isAutoMythLegendHatchToggled
-
-    if isAutoMythLegendHatchToggled then
-        print("Auto Fight: On")
-        AutoMythLegendHatchButton.Text = "Auto Hatch: On"
-        -- Add your code to start the auto fight script
-        coroutine.wrap(function()
-            while isAutoMythLegendHatchToggled do
-                local args = {
-                    [1] = "Blackhole",
-                    [2] = {
-                        ["GrassMage"] = true,
-                        ["MagicMage"] = true,
-                        ["Spooky"] = true,
-                        ["WaterMage"] = true
-                    },
-                    [4] = false,
-                    [5] = true
-                }
-            
-                game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
-
-                -- local args = {
-                --     [1] = "Icy",
-                --     [2] = {
-                --         ["Fox"] = true,
-                --         ["Bear"] = true,
-                --         ["Slime"] = true,
-                --         ["Deer"] = true,
-                --         ["Squirrel"] = true
-                --     },
-                --     [4] = false,
-                --     [5] = true
-                -- }
-
-                -- game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
-                -- game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
-                -- game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
-                -- game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
-                -- game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
-            end
-        end)()
-    else
-        print("Auto Hatch: Off")
-        AutoMythLegendHatchButton.Text = "Auto Hatch: Off"
-        -- Add your code to stop the auto fight script
-    end
-end
-
-local isPremiumHatchEggToggled = false
-local function ToggleHatchPremium()
-    isPremiumHatchEggToggled = not isPremiumHatchEggToggled
-
-    if isPremiumHatchEggToggled then
-        print("Auto HatchPrem: On")
-        autoHatchPremiumButton.Text = "Auto HatchPrem: On"
-        -- Add your code to start the auto fight script
-        coroutine.wrap(function()
-            while isPremiumHatchEggToggled do
-                local args = {
-                    [1] = "Praetorian",
-                    [2] = {
-                        ["VigilantCenturion"] = true,
-                        ["FuryGuardian"] = true,
-                        ["ProwlingGuard"] = true
-                    },
-                    [4] = false,
-                    [5] = true
-                }
-                
-                game:GetService("ReplicatedStorage").Packages.Knit.Services.EggService.RF.purchaseEgg:InvokeServer(unpack(args))
-            end
-        end)()
-    else
-        print("Auto HatchPrem: Off")
-        autoHatchPremiumButton.Text = "Auto HatchPrem: Off"
-        -- Add your code to stop the auto fight script
-    end
-end
-
-
-local isAutoSlimeToggled = false
-
-local function ToggleAutoSlime(pettoslime)
-    isAutoSlimeToggled = not isAutoSlimeToggled
-
-    if isAutoSlimeToggled then
-        print("Auto Slime: On")
-        autoSlimeButton.Text = "Auto Slime: On"
-        
-        -- Add your code to start the auto slime script
-        coroutine.wrap(function()
-            while isAutoSlimeToggled do
-                -- Declare a persistent variable to store the index for resliming
-                local persistentIndex = nil
-
-                -- Function to reset the persistent index
-                local function resetPersistentIndex()
-                    persistentIndex = nil
-                end
-
-                -- Function to check if the current pet index matches the persistent index
-                local function shouldReslime(currentIndex)
-                    return persistentIndex and currentIndex == persistentIndex
-                end
-
-                local Playerz = game:GetService("Players")
-
-                -- Get the LocalPlayer
-                local localPlayerz = Playerz.LocalPlayer
-
-                -- Run the script until the slime becomes "Red"
-                repeat
-                    -- Prepare arguments for the server invocation
-                    local args = {
-                        [1] = localPlayerz
-                    }
-
-                    -- Invoke the server function to get owned pets
-                    local OwnedPets = game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.getOwned:InvokeServer(unpack(args))
-
-                    if OwnedPets then
-                        for idx, pet in pairs(OwnedPets) do
-                            local displayName = pet.DisplayName
-                            local locked = pet.Locked
-                            local slime = pet.Slime
-                            local key = pet.Key
-                            local size = pet.CraftType
-
-                            if key == pettoslime and size == "Goliath" and slime ~= "Red" then
-                                print("displayName:", pettoslime, "| Slime:", slime)
-
-                                if slime == nil then 
-                                    args = {
-                                        [1] = idx
-                                    }
-                                    game:GetService("ReplicatedStorage").Packages.Knit.Services.PetDeslimeService.RE.onPurchase:FireServer(unpack(args))
-                                    wait(.1)
-                                    game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.slimify:InvokeServer(unpack(args))
-                                    print("Sliming...")
-                                    wait(1)
-
-                                    -- Save the index to persistent variable for resliming
-                                    persistentIndex = idx
-                                elseif slime ~= "Red" then
-                                    args = {
-                                        [1] = idx
-                                    }
-
-                                    game:GetService("ReplicatedStorage").Packages.Knit.Services.PetDeslimeService.RE.onPurchase:FireServer(unpack(args))
-                                    print("Desliming...")
-
-                                    -- Wait for 3 minutes
-                                    local countdown = 180 -- 3 minutes in seconds
-                                    while countdown > 0 do
-                                        print("Remaining time:", countdown, "seconds")
-                                        wait(10)
-                                        countdown = countdown - 10
-                                    end
-                                    game:GetService("ReplicatedStorage").Packages.Knit.Services.PetDeslimeService.RE.onClaim:FireServer()
-                                end
-                            elseif shouldReslime(idx) then
-                                -- Check if the current pet index matches the persistent index for resliming
-                                args = {
-                                    [1] = idx
-                                }
-
-                                game:GetService("ReplicatedStorage").Packages.Knit.Services.PetService.RF.slimify:InvokeServer(unpack(args))
-                                print("Resliming...")
-                                wait(1)
-
-                                -- Reset the persistent index after resliming
-                                resetPersistentIndex()
-                            else
-                                -- Handle other cases or leave it empty if no specific action is needed.
-                            end
-                        end
-                    else
-                        print("OwnedPets is nil.")
-                    end
-                until persistentIndex == nil -- Continue the loop until the slime becomes "Red"
-                wait(1) -- Add a wait after the loop
-            end
-        end)()
-    else
-        print("Auto Slime: Off")
-        autoSlimeButton.Text = "Auto Slime: Off"
-    end
-end
+--- Toggle Console --
 
 local StarterGui = game:GetService("StarterGui")
 
-local function ToggleConsole()
-        coroutine.wrap(function()
-            local currentVisibility = StarterGui:GetCore("DevConsoleVisible")
-            StarterGui:SetCore("DevConsoleVisible", not currentVisibility)
-        end)()
+local function toggleConsole()
+    coroutine.wrap(function()
+        local currentVisibility = StarterGui:GetCore("DevConsoleVisible")
+        StarterGui:SetCore("DevConsoleVisible", not currentVisibility)
+    end)()
 end
+-- Toggle Console
 
+---------------------------- GUI --------------------------------
+
+
+local Finity = loadstring(game:HttpGet("https://raw.githubusercontent.com/LocalSmail/Finity/main/Library"))()
+
+local FinityWindow = Finity.new("Arm Wrestling Simulator Admin Menu", true, false, "", true, "")
+
+
+-- Auto Farm Gui --
+local AutoFarmCategory = FinityWindow:Category("Auto-Farm")
+
+local AutoFarmSettings = AutoFarmCategory:Sector("") -- Adds sections inside the category, Name Optional
+
+-- Merchant --
+AutoFarmSettings:Cheat("Checkbox", "Toggle AutoMerchant", toggleAutoMerchant)
+
+-- Seeds --
+local PlantedSeeds = AutoFarmSettings:Cheat("dropdown", "Select Seed Type", function(seedsInput)
+seedsToPlant = seedsInput
+print(seedsToPlant)
+end, { options = {"Apple Seeds", "Banana Seeds", "DragonFruit Seeds","Pear Seeds"}, default = "Apple Seeds" })
+
+AutoFarmSettings:Cheat("Checkbox", "Toggle AutoFarm", toggleAutoFarming)
+
+-- Snacks --
+local CraftedSnacks = AutoFarmSettings:Cheat("dropdown", "Select Snack Type", function(snackInput)
+    snacksToCraft = snackInput
+    print(snacksToCraft)
+    end, { options = {"Apple", "Banana", "DragonFruit","Pear"}, default = "Apple" })
     
--- Function to remove the menu
-local function RemoveMenu()
-    screenGui:Destroy()
+    AutoFarmSettings:Cheat("Checkbox", "Toggle AutoSnack", toggleAutoSnackCrafting)
+
+
+
+-- Auto Slime Gui --
+local AutoSlimeCategory = FinityWindow:Category("Auto-Slime")
+
+local AutoSlimeSettings = AutoSlimeCategory:Sector("") -- Adds sections inside the category, Name Optional
+local SlimePetName = AutoSlimeSettings:Cheat("Textbox", "Pet Name", function(petslimeinput)
+    pettoslime = petslimeinput -- Set the global variable pettoslime
+    print(pettoslime)
+end, { placeholder = "Dominus" })
+
+AutoSlimeSettings:Cheat("Checkbox", "Toggle AutoSlime", toggleAutoSlime)
+local slimeLabel = AutoSlimeSettings:Cheat("Label", "The last slime value is : ")
+
+--- Auto Fight ----
+
+local AutoFightCategory = FinityWindow:Category("Auto-Fight")
+
+local AutoFightSettings = AutoFightCategory:Sector("") -- Adds sections inside the category, Name Optional
+
+local bosses = AutoFightSettings:Cheat("dropdown", "Select Boss", function(bossInput)
+    bossToFight = bossInput
+    print(bossToFight)
+    end, { options = {"W3","W4","W5","W6","W7B1","W7B2","W7B3","W7B4","W7B5","W8B1","W8B2","W8B3","WvB4","W8B5","W9"}, default = "" })
+
+AutoFightSettings:Cheat("Checkbox", "Toggle AutoFight", toggleAutoFight)
+
+
+--- Auto Train ----
+
+local AutoTrainCategory = FinityWindow:Category("Auto-Train")
+
+local AutoTrainSettings = AutoTrainCategory:Sector("") -- Adds sections inside the category, Name Optional
+
+local weights = AutoTrainSettings:Cheat("dropdown", "Select Boss", function(trainInput)
+    weightToTrain = trainInput
+    print(weightToTrain)
+    end, { options = {"W3","W4","W5","W6","W7B1","W7B2","W7B3","W7B4","W7B5","W8B1","W8B2","W8B3","WvB4","W8B5","W9"}, default = "" })
+
+AutoTrainSettings:Cheat("Checkbox", "Toggle AutoTrain", toggleTrain)
+
+
+
+--- Auto Hatch ----
+
+local AutoHatchCategory = FinityWindow:Category("Auto-Hatch")
+
+local AutoHatchSettings = AutoHatchCategory:Sector("") -- Adds sections inside the category, Name Optional
+
+AutoHatchSettings:Cheat("Checkbox", "Toggle AutoHatch Legend/Myth", toggleMythLegendHatch)
+AutoHatchSettings:Cheat("Checkbox", "Toggle AutoHatch Rare", toggleRareHatch)
+AutoHatchSettings:Cheat("Checkbox", "Toggle AutoHatch Both", toggleBothHatch)
+AutoHatchSettings:Cheat("Checkbox", "Toggle AutoHatch Premium", toggleHatchPremium)
+AutoHatchSettings:Cheat("Checkbox", "Ghost Farming", mutate100)
+AutoHatchSettings:Cheat("Checkbox", "Delete Trash", deleteTrash)
+
+
+----- Teleport -----
+
+local TeleportCategory = FinityWindow:Category("Teleport")
+
+local TeleportSettings = TeleportCategory:Sector("") -- Adds sections inside the category, Name Optional
+
+local locations = TeleportSettings:Cheat("dropdown", "Select Location", function(goToInput)
+    teleportLocation = teleportTo(goToInput)
+    end, { options = {"school","garden","space","beach","bunker","dino","void","center","roman","magma"}, default = "" })
+
+--- Toggle Console ----
+
+local ConsoleCategory = FinityWindow:Category("Console")
+
+local ConsoleSettings = ConsoleCategory:Sector("") -- Adds sections inside the category, Name Optional
+
+ConsoleSettings:Cheat("Checkbox", "Toggle Console", toggleConsole)
+
+
+local MenuCategory = FinityWindow:Category("Toggle Menus")
+
+local MenuSettings = MenuCategory:Sector("") -- Adds sections inside the category, Name Optional
+
+local menus = MenuSettings:Cheat("dropdown", "Select Menu", function(menuInput)
+    toggleVisibility(menuInput)
+    end, { options = {"trails"}, default = "" })
+
+MenuSettings:Cheat("Checkbox", "Toggle Trails", toggleVisibility(trails))
+MenuSettings:Cheat("Checkbox", "Toggle All Menus", toggleAllMenus)
+
+---- GUI ---
+
+local finWindow = coreGui:WaitForChild("Finity"):WaitForChild("Container")
+local spyWindow = coreGui:WaitForChild("SimpleSpy2"):WaitForChild("Background")
+
+-- Function to toggle visibility of Finity window
+local function toggleWindow()
+    finWindow.Visible = not finWindow.Visible
 end
 
--- Connect the functions to the buttons' Click events
-toggleButton.MouseButton1Click:Connect(ToggleMenuVisibility)
-autoFarmingButton.MouseButton1Click:Connect(ToggleAutoFarming)
-autoSnackButton.MouseButton1Click:Connect(ToggleAutoSnackCrafting)
-autoMerchantButton.MouseButton1Click:Connect(ToggleAutoMerchant)
-autoFightButton.MouseButton1Click:Connect(ToggleAutoFight)
--- Connect the functions to the buttons' Click events
-autoSlimeButton.MouseButton1Click:Connect(function()
-    ToggleAutoSlime(pettoslime)  -- Replace "YourPetToSlime" with the actual pet to slime
+local function toggleWindow1()
+    spyWindow.Visible = not spyWindow.Visible
+end
+
+-- Create a button
+local toggleButton = Instance.new("TextButton")
+toggleButton.Text = "ToggleFinity"
+toggleButton.Size = UDim2.new(0, 80, 0, 30)
+toggleButton.Position = UDim2.new(0, 10, 0, 10)
+toggleButton.Parent = screenGui
+
+local toggleButton1 = Instance.new("TextButton")
+toggleButton1.Text = "ToggleSpy"
+toggleButton1.Size = UDim2.new(0, 80, 0, 30)
+toggleButton1.Position = UDim2.new(0, 10, 0, 50)
+toggleButton1.Parent = screenGui
+
+-- Connect the function to the button's MouseButton1Click event
+toggleButton.MouseButton1Click:Connect(function()
+    toggleWindow()
 end)
-consoleButton.MouseButton1Click:Connect(ToggleConsole)
-AutoMythLegendHatchButton.MouseButton1Click:Connect(ToggleHatch)
-autoHatchPremiumButton.MouseButton1Click:Connect(ToggleHatchPremium)
-removeButton.MouseButton1Click:Connect(RemoveMenu)
 
-
+toggleButton1.MouseButton1Click:Connect(function()
+    toggleWindow1()
+end)
 
