@@ -11,7 +11,6 @@ local coreGui = game:GetService("CoreGui")
 local potionsBar = gameUi:WaitForChild("PotionsBar")
 local botBar = gameUi:WaitForChild("TopbarContainer")
 local botRight = gameUi:WaitForChild("ToolBar")
-local trails = gameUi:WaitForChild("RightMenu"):WaitForChild("Small"):WaitForChild("Trails")
 local daily = gameUi:WaitForChild("RightMenu"):WaitForChild("Small"):WaitForChild("DailyReward")
 local trade = gameUi:WaitForChild("RightMenu"):WaitForChild("Small"):WaitForChild("TradeRequest")
 local season = gameUi:WaitForChild("RightMenu"):WaitForChild("Small"):WaitForChild("SeasonPass")
@@ -21,6 +20,7 @@ local rightMenuGifts = gameUi:WaitForChild("RightMenu"):WaitForChild("Gifts")
 local spinBar = gameUi:WaitForChild("SpinPrompt")
 local topBar = gameUi:WaitForChild("Currency")
 local leftMenu = gameUi:WaitForChild("Left")
+
 
 -- Create a ScreenGui to hold the menu
 local screenGui = Instance.new("ScreenGui")
@@ -46,7 +46,6 @@ local function toggleAllMenus ()
             leftMenu,
             daily,
             trade,
-            trails,
             season,
             rightMenuAuto,
             rightMenuEvent,
@@ -316,7 +315,48 @@ local function toggleAutoFight()
 end
 
 ------- Auto Fighting -------- 
+------- Auto Train -------- 
 
+local isAutoTrainToggled = false
+local function toggleTrain()
+    isAutoTrainToggled = not isAutoTrainToggled
+    wait(3)
+    if isAutoTrainToggled then
+        print("Auto Train: On")
+        local args1 = {
+            [1] = {
+                ["Value"] = "Biceps",
+                ["AutoType"] = "AutoTrain"
+            }
+          }
+        game:GetService("ReplicatedStorage").Packages.Knit.Services.IdleTeleportService.RF.SetLatestTeleportData:InvokeServer(unpack(args1))
+        local args = {
+            [1] = "9",
+            [2] = "Dumbells",
+            [3] = "925000Kg"
+        }
+        game:GetService("ReplicatedStorage").Packages.Knit.Services.ToolService.RE.onEquipRequest:FireServer(unpack(args))
+        local args = {
+            [1] = "9",
+            [2] = "Barbells",
+            [3] = "Tier27"
+        }
+        game:GetService("ReplicatedStorage").Packages.Knit.Services.ToolService.RE.onEquipRequest:FireServer(unpack(args))
+        coroutine.wrap(function()
+            while isAutoTrainToggled do
+                for i = 1, 100 do
+                    game:GetService("ReplicatedStorage").Packages.Knit.Services.ToolService.RE.onClick:FireServer()
+                    wait(1)
+                end
+            end
+        end)()
+    else
+        print("Auto Train: Off")
+        -- Add your code to stop the auto fight script
+    end
+end
+
+------- Auto Train -------- 
 
 ---- Auto Hatch ----
 
@@ -639,6 +679,21 @@ local bosses = AutoFightSettings:Cheat("dropdown", "Select Boss", function(bossI
 AutoFightSettings:Cheat("Checkbox", "Toggle AutoFight", toggleAutoFight)
 
 
+--- Auto Train ----
+
+local AutoTrainCategory = FinityWindow:Category("Auto-Train")
+
+local AutoTrainSettings = AutoTrainCategory:Sector("") -- Adds sections inside the category, Name Optional
+
+local weights = AutoTrainSettings:Cheat("dropdown", "Select Boss", function(trainInput)
+    weightToTrain = trainInput
+    print(weightToTrain)
+    end, { options = {"W3","W4","W5","W6","W7B1","W7B2","W7B3","W7B4","W7B5","W8B1","W8B2","W8B3","WvB4","W8B5","W9"}, default = "" })
+
+AutoTrainSettings:Cheat("Checkbox", "Toggle AutoTrain", toggleTrain)
+
+
+
 --- Auto Hatch ----
 
 local AutoHatchCategory = FinityWindow:Category("Auto-Hatch")
@@ -661,7 +716,7 @@ local TeleportSettings = TeleportCategory:Sector("") -- Adds sections inside the
 
 local locations = TeleportSettings:Cheat("dropdown", "Select Location", function(goToInput)
     teleportLocation = teleportTo(goToInput)
-    end, { options = {"school","garden","space","beach","bunker","dino","void","space","roman","magma"}, default = "" })
+    end, { options = {"school","garden","space","beach","bunker","dino","void","center","roman","magma"}, default = "" })
 
 --- Toggle Console ----
 
@@ -686,10 +741,15 @@ MenuSettings:Cheat("Checkbox", "Toggle All Menus", toggleAllMenus)
 ---- GUI ---
 
 local finWindow = coreGui:WaitForChild("Finity"):WaitForChild("Container")
+local spyWindow = coreGui:WaitForChild("SimpleSpy2"):WaitForChild("Background")
 
 -- Function to toggle visibility of Finity window
 local function toggleWindow()
     finWindow.Visible = not finWindow.Visible
+end
+
+local function toggleWindow1()
+    spyWindow.Visible = not spyWindow.Visible
 end
 
 -- Create a button
@@ -697,11 +757,20 @@ local toggleButton = Instance.new("TextButton")
 toggleButton.Text = "ToggleFinity"
 toggleButton.Size = UDim2.new(0, 80, 0, 30)
 toggleButton.Position = UDim2.new(0, 10, 0, 10)
-toggleButton.Text = "Toggle Menu"
 toggleButton.Parent = screenGui
+
+local toggleButton1 = Instance.new("TextButton")
+toggleButton1.Text = "ToggleSpy"
+toggleButton1.Size = UDim2.new(0, 80, 0, 30)
+toggleButton1.Position = UDim2.new(0, 10, 0, 50)
+toggleButton1.Parent = screenGui
 
 -- Connect the function to the button's MouseButton1Click event
 toggleButton.MouseButton1Click:Connect(function()
     toggleWindow()
+end)
+
+toggleButton1.MouseButton1Click:Connect(function()
+    toggleWindow1()
 end)
 
