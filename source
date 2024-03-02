@@ -43,6 +43,7 @@ local function assignTeam(teamName)
             [1] = teamHex
         }
         game:GetService("ReplicatedStorage").Packages.Knit.Services.PetTeamService.RE.onEquipTeam:FireServer(unpack(args))
+        print("Team ",teamName,"Assigned.")
     else
         warn("Team name not found in teamsTable:", teamName)
     end
