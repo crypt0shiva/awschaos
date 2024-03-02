@@ -30,7 +30,7 @@ screenGui.Parent = playerGui
 
 
 local teamsTable = {
-    ["training"] = "92862595-1e0d-48ae-9f65-df7f7a65916e",
+    ["train"] = "92862595-1e0d-48ae-9f65-df7f7a65916e",
     ["wins"] = "e92ac30c-332c-4595-b987-060c2c9d7691",
     ["luck"] = "1d45901e-cd4d-4010-a364-9ee3c2afed21"
 }
@@ -348,7 +348,7 @@ local function toggleTrain()
     wait(3)
     if isAutoTrainToggled then
         print("Auto Train: On")
-        assignTeam("training")
+        assignTeam("train")
         local args1 = {
             [1] = {
                 ["Value"] = "Biceps",
@@ -799,4 +799,3 @@ end)
 toggleButton1.MouseButton1Click:Connect(function()
     toggleWindow1()
 end)
-
