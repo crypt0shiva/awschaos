@@ -304,25 +304,25 @@ end
 
 local function getBossTpData(bossName)
     if bossName == "W7_B2" then
-        return {
+       return  args = {
             ["Value"] = "MissileMaven",
             ["AutoType"] = "AutoFight",
             ["Value2"] = "7"
         }
     elseif bossName == "W7_B5" then
-        return {
+      return  args =  {
             ["Value"] = "DrPropulsion",
             ["AutoType"] = "AutoFight",
             ["Value2"] = "7"
         }
     elseif bossName == "W8_B5" then
-        return {
+      return  args =  {
             ["Value"] = "DivineTrainer",
             ["AutoType"] = "AutoFight",
             ["Value2"] = "8"
         }
     elseif bossName == "W9_B1" then
-        return {
+      return  args =  {
             ["Value"] = "DeskAgent",
             ["AutoType"] = "AutoFight",
             ["Value2"] = "9"
@@ -334,25 +334,25 @@ end
 
 local function getAwData(bossName)
     if bossName == "W7_B2" then
-        return local args = {
+        return  args = {
             [1] = "Rogue",
             [2] = workspace.GameObjects.ArmWrestling:FindFirstChild("7").NPC.Rogue.Table,
             [3] = "7"
         }
     elseif bossName == "W7_B5" then
-        return local args = {
+        return  args =  = {
             [1] = "DrPropulsion",
             [2] = workspace.GameObjects.ArmWrestling:FindFirstChild("7").NPC.Rogue.Table,
             [3] = "7"
         }
     elseif bossName == "W8_B5" then
-        return local args = {
+        return  args =  = {
             [1] = "DivineTrainer",
             [2] = workspace.GameObjects.ArmWrestling:FindFirstChild("8").NPC.Rogue.Table,
             [3] = "8"
         }
     elseif bossName == "W9_B1" then
-        return local args = {
+        return  args = = {
             [1] = "DeskAgent",
             [2] = workspace.GameObjects.ArmWrestling:FindFirstChild("9").NPC.Rogue.Table,
             [3] = "9"
