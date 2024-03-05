@@ -301,6 +301,7 @@ end
 
 ------- Auto Fighting -------- 
 
+
 local function getBossTpData(bossName)
     if tpdata == "W7_B2" then
         return {
@@ -363,18 +364,19 @@ end
 
 local bossTable = getBossTpData(bossName)
 
-local function bossFight(bossName)
+local function bossFight()
     local bossTable = getBossTpData(bossName)
     local AwData = getAwData(bossName)
-    if bossTable then
-        print(bossName,bossTable)
+
+    if bossTable and AwData then
+        print("Fighting:", bossName)
         game:GetService("ReplicatedStorage").Packages.Knit.Services.IdleTeleportService.RF.SetLatestTeleportData:InvokeServer(unpack(bossTable))
         game:GetService("ReplicatedStorage").Packages.Knit.Services.ArmWrestleService.RE.onEnterNPCTable:FireServer(unpack(AwData))
-        print("Fighting:", bossName)
     else
-        print("Unknown location:", bossName)
+        warn("Unknown location or missing data for:", bossName,AwData)
     end
 end
+
 
 
 local isAutoFightToggled = false
