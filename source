@@ -738,7 +738,7 @@ local bosses = AutoFightSettings:Cheat("dropdown", "Select Boss", function(bossI
     print(bossName)
     end, { options = {"W7B2","W7B5","W8B5","W9B1"}, default = "" })
 
-AutoFightSettings:Cheat("Checkbox", "Toggle AutoFight", toggleAutoFight(bossName))
+AutoFightSettings:Cheat("Checkbox", "Toggle AutoFight", toggleAutoFight)
 
 
 --- Auto Train ----
