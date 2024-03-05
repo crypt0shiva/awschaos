@@ -303,60 +303,59 @@ end
 
 
 local function getBossTpData(bossName)
-    if tpdata == "W7_B2" then
+    if bossName == "W7_B2" then
         return {
-                    ["Value"] = "MissileMaven",
-                    ["AutoType"] = "AutoFight",
-                    ["Value2"] = "7"
-                }
-    elseif tpdata  == "W7_B5" then
-        return  {
-                ["Value"] = "DrPropulsion",
-                ["AutoType"] = "AutoFight",
-                ["Value2"] = "7"
-            }
-    elseif tpdata  == "W8_B5" then
-        return  {
-                ["Value"] = "DivineTrainer",
-                ["AutoType"] = "AutoFight",
-                ["Value2"] = "8"
-            }
-    elseif tpdata == "W9_B1" then
-        return  {
-                ["Value"] = "DeskAgent",
-                ["AutoType"] = "AutoFight",
-                ["Value2"] = "9"
-            }
+            ["Value"] = "MissileMaven",
+            ["AutoType"] = "AutoFight",
+            ["Value2"] = "7"
+        }
+    elseif bossName == "W7_B5" then
+        return {
+            ["Value"] = "DrPropulsion",
+            ["AutoType"] = "AutoFight",
+            ["Value2"] = "7"
+        }
+    elseif bossName == "W8_B5" then
+        return {
+            ["Value"] = "DivineTrainer",
+            ["AutoType"] = "AutoFight",
+            ["Value2"] = "8"
+        }
+    elseif bossName == "W9_B1" then
+        return {
+            ["Value"] = "DeskAgent",
+            ["AutoType"] = "AutoFight",
+            ["Value2"] = "9"
+        }
     else
         return nil -- Handle unknown location names
     end
 end
-
 local function getAwData(bossName)
-    if AwData == "W7_B2" then
-        return  {
+    if bossName == "W7_B2" then
+        return {
             [1] = "Rogue",
             [2] = workspace.GameObjects.ArmWrestling:FindFirstChild("7").NPC.Rogue.Table,
             [3] = "7"
         }
-    elseif AwData  == "W7_B5" then
-        return  {
+    elseif bossName == "W7_B5" then
+        return {
             [1] = "DrPropulsion",
             [2] = workspace.GameObjects.ArmWrestling:FindFirstChild("7").NPC.Rogue.Table,
             [3] = "7"
         }
-    elseif AwData  == "W8_B5" then
-            return  {
-                [1] = "DivineTrainer",
-                [2] = workspace.GameObjects.ArmWrestling:FindFirstChild("8").NPC.Rogue.Table,
-                [3] = "8"
-            }
-    elseif AwData == "W9_B1" then
-            return  {
-                [1] = "DeskAgent",
-                [2] = workspace.GameObjects.ArmWrestling:FindFirstChild("9").NPC.Rogue.Table,
-                [3] = "9"
-            }
+    elseif bossName == "W8_B5" then
+        return {
+            [1] = "DivineTrainer",
+            [2] = workspace.GameObjects.ArmWrestling:FindFirstChild("8").NPC.Rogue.Table,
+            [3] = "8"
+        }
+    elseif bossName == "W9_B1" then
+        return {
+            [1] = "DeskAgent",
+            [2] = workspace.GameObjects.ArmWrestling:FindFirstChild("9").NPC.Rogue.Table,
+            [3] = "9"
+        }
     else
         return nil -- Handle unknown location names
     end
