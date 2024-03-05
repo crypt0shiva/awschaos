@@ -674,10 +674,9 @@ local AutoFightSettings = AutoFightCategory:Sector("") -- Adds sections inside t
 local bosses = AutoFightSettings:Cheat("dropdown", "Select Boss", function(bossInput)
     bossName = bossInput
     print(bossName)
-    toggleAutoFight(bossName)
     end, { options = {"W7B2","W7B5","W8B5","W9B1"}, default = "" })
 
-AutoFightSettings:Cheat("Checkbox", "Toggle AutoFight", toggleAutoFight)
+AutoFightSettings:Cheat("Checkbox", "Toggle AutoFight", toggleAutoFight(bossName))
 
 
 --- Auto Train ----
