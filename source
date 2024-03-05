@@ -672,9 +672,10 @@ local AutoFightCategory = FinityWindow:Category("Auto-Fight")
 local AutoFightSettings = AutoFightCategory:Sector("") -- Adds sections inside the category, Name Optional
 
 local bosses = AutoFightSettings:Cheat("dropdown", "Select Boss", function(bossInput)
-    bossToFight = bossInput
-    print(bossToFight)
-    end, { options = {"W3","W4","W5","W6","W7B1","W7B2","W7B3","W7B4","W7B5","W8B1","W8B2","W8B3","WvB4","W8B5","W9"}, default = "" })
+    bossName = bossInput
+    print(bossName)
+    toggleAutoFight(bossName)
+    end, { options = {"W7B2","W7B5","W8B5","W9B1"}, default = "" })
 
 AutoFightSettings:Cheat("Checkbox", "Toggle AutoFight", toggleAutoFight)
 
