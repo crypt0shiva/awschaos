@@ -363,7 +363,7 @@ end
 
 local bossTable = getBossTpData(bossName)
 
-local function bossFight()
+local function bossFight(bossName)
     local bossTable = getBossTpData(bossName)
     local AwData = getAwData(bossName)
 
