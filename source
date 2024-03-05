@@ -331,27 +331,28 @@ local function getBossTpData(bossName)
         return nil -- Handle unknown location names
     end
 end
+
 local function getAwData(bossName)
     if bossName == "W7_B2" then
-        return {
+        return local args = {
             [1] = "Rogue",
             [2] = workspace.GameObjects.ArmWrestling:FindFirstChild("7").NPC.Rogue.Table,
             [3] = "7"
         }
     elseif bossName == "W7_B5" then
-        return {
+        return local args = {
             [1] = "DrPropulsion",
             [2] = workspace.GameObjects.ArmWrestling:FindFirstChild("7").NPC.Rogue.Table,
             [3] = "7"
         }
     elseif bossName == "W8_B5" then
-        return {
+        return local args = {
             [1] = "DivineTrainer",
             [2] = workspace.GameObjects.ArmWrestling:FindFirstChild("8").NPC.Rogue.Table,
             [3] = "8"
         }
     elseif bossName == "W9_B1" then
-        return {
+        return local args = {
             [1] = "DeskAgent",
             [2] = workspace.GameObjects.ArmWrestling:FindFirstChild("9").NPC.Rogue.Table,
             [3] = "9"
@@ -361,7 +362,6 @@ local function getAwData(bossName)
     end
 end
 
-local bossTable = getBossTpData(bossName)
 
 local function bossFight(bossName)
     local bossTable = getBossTpData(bossName)
