@@ -690,12 +690,10 @@ local FinityWindow = Finity.new("Arm Wrestling Simulator Admin Menu", true, fals
 
 -- Auto Farm Gui --
 local AutoFarmCategory = FinityWindow:Category("Auto-Farm")
-
 local AutoFarmSettings = AutoFarmCategory:Sector("") -- Adds sections inside the category, Name Optional
 
 -- Merchant --
 AutoFarmSettings:Cheat("Checkbox", "Toggle AutoMerchant", toggleAutoMerchant)
--- Merchant --
 AutoFarmSettings:Cheat("Checkbox", "Toggle AutoMerchant Fisherman", toggleAutoMerchant1)
 
 
