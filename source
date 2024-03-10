@@ -295,6 +295,44 @@ local function toggleAutoMerchant()
 end
 -------- Auto Merchant --------
 
+-------- Auto Merchant Fisher --------
+local isAutoMerchantToggled1 = false
+local function toggleAutoMerchant1()
+    isAutoMerchantToggled1 = not isAutoMerchantToggled1
+    
+    if isAutoMerchantToggled1 then
+        print("Auto Merchant: On")
+        coroutine.wrap(function()
+            while isAutoMerchantToggled1 do
+                for i = 1, 1 do
+                    local args = {
+                        [1] = "Fisherman",
+                        [2] = 1
+                    }
+                    game:GetService("ReplicatedStorage").Packages.Knit.Services.MerchantService.RF.BuyItem:InvokeServer(unpack(args))
+                    wait(1)
+                for i = 1, 1 do
+                    local args = {
+                        [1] = "Fisherman",
+                        [2] = 2
+                    }
+                    game:GetService("ReplicatedStorage").Packages.Knit.Services.MerchantService.RF.BuyItem:InvokeServer(unpack(args))
+                    wait(1)
+                for i = 1, 1 do
+                    local args = {
+                        [1] = "Fisherman",
+                        [2] = 3
+                    }
+                    game:GetService("ReplicatedStorage").Packages.Knit.Services.MerchantService.RF.BuyItem:InvokeServer(unpack(args))
+                end
+            end
+        end)()
+    else
+        print("Auto Merchant: Off")
+    end
+end
+-------- Auto Merchant --------
+
 ------- Auto Train -------- 
 
 local isAutoTrainToggled = false
@@ -657,6 +695,9 @@ local AutoFarmSettings = AutoFarmCategory:Sector("") -- Adds sections inside the
 
 -- Merchant --
 AutoFarmSettings:Cheat("Checkbox", "Toggle AutoMerchant", toggleAutoMerchant)
+-- Merchant --
+AutoFarmSettings:Cheat("Checkbox", "Toggle AutoMerchant Fisherman", toggleAutoMerchant1)
+
 
 -- Seeds --
 local PlantedSeeds = AutoFarmSettings:Cheat("dropdown", "Select Seed Type", function(seedsInput)
