@@ -295,112 +295,6 @@ local function toggleAutoMerchant()
 end
 -------- Auto Merchant --------
 
-
-------- Auto Fighting -------- 
-
-
-local function getBossTpData(bossName)
-    if bossName == "W7_B2" then
-       return  args = {
-            ["Value"] = "MissileMaven",
-            ["AutoType"] = "AutoFight",
-            ["Value2"] = "7"
-        }
-    elseif bossName == "W7_B5" then
-      return  args =  {
-            ["Value"] = "DrPropulsion",
-            ["AutoType"] = "AutoFight",
-            ["Value2"] = "7"
-        }
-    elseif bossName == "W8_B5" then
-      return  args =  {
-            ["Value"] = "DivineTrainer",
-            ["AutoType"] = "AutoFight",
-            ["Value2"] = "8"
-        }
-    elseif bossName == "W9_B1" then
-      return  args =  {
-            ["Value"] = "DeskAgent",
-            ["AutoType"] = "AutoFight",
-            ["Value2"] = "9"
-        }
-    else
-        return nil -- Handle unknown location names
-    end
-end
-
-local function getAwData(bossName)
-    if bossName == "W7_B2" then
-        return  args = {
-            [1] = "Rogue",
-            [2] = workspace.GameObjects.ArmWrestling:FindFirstChild("7").NPC.Rogue.Table,
-            [3] = "7"
-        }
-    elseif bossName == "W7_B5" then
-        return  args =  = {
-            [1] = "DrPropulsion",
-            [2] = workspace.GameObjects.ArmWrestling:FindFirstChild("7").NPC.Rogue.Table,
-            [3] = "7"
-        }
-    elseif bossName == "W8_B5" then
-        return  args =  = {
-            [1] = "DivineTrainer",
-            [2] = workspace.GameObjects.ArmWrestling:FindFirstChild("8").NPC.Rogue.Table,
-            [3] = "8"
-        }
-    elseif bossName == "W9_B1" then
-        return  args = = {
-            [1] = "DeskAgent",
-            [2] = workspace.GameObjects.ArmWrestling:FindFirstChild("9").NPC.Rogue.Table,
-            [3] = "9"
-        }
-    else
-        return nil -- Handle unknown location names
-    end
-end
-
-
-local function bossFight(bossName)
-    local bossTable = getBossTpData(bossName)
-    local AwData = getAwData(bossName)
-
-    if bossTable and AwData then
-        print("Fighting:", bossName)
-        game:GetService("ReplicatedStorage").Packages.Knit.Services.IdleTeleportService.RF.SetLatestTeleportData:InvokeServer(unpack(bossTable))
-        game:GetService("ReplicatedStorage").Packages.Knit.Services.ArmWrestleService.RE.onEnterNPCTable:FireServer(unpack(AwData))
-    else
-        warn("Unknown location or missing data for:", bossName,AwData)
-    end
-end
-
-
-
-local isAutoFightToggled = false
-local function toggleAutoFight(bossName)
-    isAutoFightToggled = not isAutoFightToggled
-
-    if isAutoFightToggled then
-        print("Auto Fight: On")
-        assignTeam("wins")
-        -- Add your code to start the auto fight script
-        coroutine.wrap(function()
-            while isAutoFightToggled do
-                bossFight(bossName)
-                wait(3)
-                for i = 1, 25 do
-                    game:GetService("ReplicatedStorage").Packages.Knit.Services.ArmWrestleService.RE.onClickRequest:FireServer()
-                    wait(.1)
-                end
-            end
-        end)()
-    else
-        print("Auto Fight: Off")
-        -- Add your code to stop the auto fight script
-    end
-end
-
-
-------- Auto Fighting -------- 
 ------- Auto Train -------- 
 
 local isAutoTrainToggled = false
@@ -444,6 +338,48 @@ local function toggleTrain()
 end
 
 ------- Auto Train -------- 
+------- Auto Fighting -------- 
+
+local isAutoFightToggled = false
+local function toggleAutoFight()
+    isAutoFightToggled = not isAutoFightToggled
+
+    if isAutoFightToggled then
+        print("Auto Fight: On")
+        -- Add your code to start the auto fight script
+        coroutine.wrap(function()
+            while isAutoFightToggled do
+                    local args1 = {
+                        [1] = {
+                        ["Value"] = "Rogue",
+                        ["AutoType"] = "AutoFight",
+                        ["Value2"] = "8"
+                   }
+                  }
+                game:GetService("ReplicatedStorage").Packages.Knit.Services.IdleTeleportService.RF.SetLatestTeleportData:InvokeServer(unpack(args1))
+
+                local args2 = {
+                    [1] = "Rogue",
+                    [2] = workspace.GameObjects.ArmWrestling:FindFirstChild("8").NPC.Rogue.Table,
+                    [3] = "8"
+                }
+                game:GetService("ReplicatedStorage").Packages.Knit.Services.ArmWrestleService.RE.onEnterNPCTable:FireServer(unpack(args2))
+                
+                wait(3)
+
+                for i = 1, 25 do
+                    game:GetService("ReplicatedStorage").Packages.Knit.Services.ArmWrestleService.RE.onClickRequest:FireServer()
+                    wait(.1)
+                end
+            end
+        end)()
+    else
+        print("Auto Fight: Off")
+        -- Add your code to stop the auto fight script
+    end
+end
+
+------- Auto Fighting -------- 
 
 ---- Auto Hatch ----
 
@@ -752,6 +688,7 @@ end, { placeholder = "Dominus" })
 AutoSlimeSettings:Cheat("Checkbox", "Toggle AutoSlime", toggleAutoSlime)
 local slimeLabel = AutoSlimeSettings:Cheat("Label", "The last slime value is : ")
 
+
 --- Auto Fight ----
 
 local AutoFightCategory = FinityWindow:Category("Auto-Fight")
@@ -759,9 +696,9 @@ local AutoFightCategory = FinityWindow:Category("Auto-Fight")
 local AutoFightSettings = AutoFightCategory:Sector("") -- Adds sections inside the category, Name Optional
 
 local bosses = AutoFightSettings:Cheat("dropdown", "Select Boss", function(bossInput)
-    bossName = bossInput
-    print(bossName)
-    end, { options = {"W7_B2","W7_B5","W8_B5","W9_B1"}, default = "" })
+    bossToFight = bossInput
+    print(bossToFight)
+    end, { options = {"W3","W4","W5","W6","W7B1","W7B2","W7B3","W7B4","W7B5","W8B1","W8B2","W8B3","WvB4","W8B5","W9"}, default = "" })
 
 AutoFightSettings:Cheat("Checkbox", "Toggle AutoFight", toggleAutoFight)
 
