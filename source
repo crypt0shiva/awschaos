@@ -611,6 +611,35 @@ local function deleteTrash()
     end
 end
 
+--- Auto Fishing
+local function toggleAutoFishing()
+    isAutoFishingToggled = not isAutoFishingToggled
+
+    if isAutoFishingToggled then
+        local args = {  
+            [1] = true
+        }
+        game:GetService("ReplicatedStorage").Packages.Knit.Services.ToolService.RF.SetFishRod:InvokeServer(unpack(args))
+
+        print("Auto Fishing: On")
+        coroutine.wrap(function()
+            while isAutoFishingToggled do
+                game:GetService("ReplicatedStorage").Packages.Knit.Services.NetService.RF.StartCatching:InvokeServer()
+                local args = {
+                    [1] = 241,
+                    [2] = 271.41931093204767
+                }
+                game:GetService("ReplicatedStorage").Packages.Knit.Services.NetService.RF.VerifyCatch:InvokeServer(unpack(args))
+                wait(1)
+            end
+        end)()
+    else
+        print("Auto Fishing: Off")
+        game:GetService("ReplicatedStorage").Packages.Knit.Services.NetService.RF.CancelCatching:InvokeServer()
+    end
+end
+--- Auto Fishing
+
 ----- Teleport ------
 local function getLocationTable(locationName)
 
@@ -684,6 +713,9 @@ local function toggleConsole()
 end
 -- Toggle Console
 
+
+
+
 ---------------------------- GUI --------------------------------
 
 
@@ -691,6 +723,14 @@ local Finity = loadstring(game:HttpGet("https://raw.githubusercontent.com/LocalS
 
 local FinityWindow = Finity.new("Arm Wrestling Simulator Admin Menu", true, false, "", true, "")
 
+
+-- Auto Fishing -- 
+
+local AutoFishCategory = FinityWindow:Category("Auto-Fish")
+
+local AutoFishSettings = AutoFishCategory:Sector("") -- Adds sections inside the category, Name Optional
+
+AutoFishSettings:Cheat("Checkbox", "Toggle AutoFish", toggleAutoFishing)
 
 -- Auto Farm Gui --
 local AutoFarmCategory = FinityWindow:Category("Auto-Farm")
