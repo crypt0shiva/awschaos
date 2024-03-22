@@ -683,6 +683,10 @@ local function getLocationTable(locationName)
         return {
             [1] = workspace.Zones:FindFirstChild("9").Interactables.Teleports.Locations:FindFirstChild("Magma World")
         }
+    elseif locationName == "magma" then
+        return {
+            [1] = workspace.Zones:FindFirstChild("1").Interactables.Teleports.Locations.HuntPoint
+        }
     else
         return nil -- Handle unknown location names
     end
@@ -822,7 +826,7 @@ local TeleportSettings = TeleportCategory:Sector("") -- Adds sections inside the
 
 local locations = TeleportSettings:Cheat("dropdown", "Select Location", function(goToInput)
     teleportLocation = teleportTo(goToInput)
-    end, { options = {"school","garden","space","beach","bunker","dino","void","center","roman","magma"}, default = "" })
+    end, { options = {"school","garden","space","beach","bunker","dino","void","center","roman","magma","event"}, default = "" })
 
 --- Toggle Console ----
 
