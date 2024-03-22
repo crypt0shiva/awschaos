@@ -683,7 +683,7 @@ local function getLocationTable(locationName)
         return {
             [1] = workspace.Zones:FindFirstChild("9").Interactables.Teleports.Locations:FindFirstChild("Magma World")
         }
-    elseif locationName == "magma" then
+    elseif locationName == "event" then
         return {
             [1] = workspace.Zones:FindFirstChild("HuntWorld").Interactables.Teleports.Locations:FindFirstChild("HuntPoint")
         }
