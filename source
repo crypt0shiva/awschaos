@@ -685,7 +685,7 @@ local function getLocationTable(locationName)
         }
     elseif locationName == "magma" then
         return {
-            [1] = workspace.Zones:FindFirstChild("1").Interactables.Teleports.Locations.HuntPoint
+            [1] = workspace.Zones:FindFirstChild("HuntWorld").Interactables.Teleports.Locations:FindFirstChild("HuntPoint")
         }
     else
         return nil -- Handle unknown location names
