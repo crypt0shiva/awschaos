@@ -624,7 +624,10 @@ local function toggleAutoFishing()
         print("Auto Fishing: On")
         coroutine.wrap(function()
             while isAutoFishingToggled do
-                game:GetService("ReplicatedStorage").Packages.Knit.Services.NetService.RF.StartCatching:InvokeServer()
+                local args = {
+                    [1] = "Chocolate"
+                    }
+                game:GetService("ReplicatedStorage").Packages.Knit.Services.NetService.RF.StartCatching:InvokeServer(unpack(args))
                 local args = {
                     [1] = 241,
                     [2] = 271.41931093204767
