@@ -255,7 +255,7 @@ local function toggleAutoSnackCrafting()
                     
                     local args = {
                         [1] = {
-                            ["Item"] = "Apple",
+                            ["Item"] = snacksToCraft,
                             ["Tier"] = 2
                         }
                     }
@@ -760,7 +760,7 @@ AutoFarmSettings:Cheat("Checkbox", "Toggle AutoFarm", toggleAutoFarming)
 local CraftedSnacks = AutoFarmSettings:Cheat("dropdown", "Select Snack Type", function(snackInput)
     snacksToCraft = snackInput
     print(snacksToCraft)
-    end, { options = {"Apple", "Banana", "DragonFruit","Pear"}, default = "Apple" })
+    end, { options = {"Apple", "Banana", "Dragon Fruit","Starfruit","Golden Pear","Chocolate"}, default = "Apple" })
     
     AutoFarmSettings:Cheat("Checkbox", "Toggle AutoSnack", toggleAutoSnackCrafting)
 
