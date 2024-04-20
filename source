@@ -572,7 +572,9 @@ local function mutate100()
         for idx, pet in pairs(OwnedPets) do
             local displayName = pet.DisplayName
             local key = pet.Key
-
+   local args = {  
+            [1] = true
+        }
             if key == "Dog" or key == "Cow" then
                 print("displayName:", displayName)
                 local args5 = {
@@ -624,10 +626,7 @@ local function toggleAutoFishing()
         print("Auto Fishing: On")
         coroutine.wrap(function()
             while isAutoFishingToggled do
-                local args = {
-                    [1] = "Normal"
-                    }
-                game:GetService("ReplicatedStorage").Packages.Knit.Services.NetService.RF.StartCatching:InvokeServer(unpack(args))
+                game:GetService("ReplicatedStorage").Packages.Knit.Services.NetService.RF.StartCatching:InvokeServer()
                 local args = {
                     [1] = 241,
                     [2] = 271.41931093204767
