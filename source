@@ -81,8 +81,6 @@ local function toggleAllMenus ()
 
 end
 
-toggleAllMenus()
-
 ---- Auto Slime ----
 
 local isAutoSlimeEnabled = false
